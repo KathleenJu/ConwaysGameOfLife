@@ -7,17 +7,19 @@ namespace GameOfLife
     {
         public bool CellDies(List<Cell> livingCells, Cell cellTarget)
         {
-            return HasFewerThanTwoLiveNeighbours(livingCells, cellTarget);
+            return HasFewerThanTwoLiveNeighbours(livingCells, cellTarget) || HasMoreThanThreeLiveNeighbours(livingCells , cellTarget);
         }
 
         private bool HasFewerThanTwoLiveNeighbours(List<Cell> livingCells, Cell cellTarget)
         {
-            var neighbouringCells = livingCells.Where(cell => cell != cellTarget).Where(cell =>
-                cell.Row >= cellTarget.Row - 1 && cell.Row <= cellTarget.Row + 1 &&
-                cell.Column >= cellTarget.Column - 1 && cell.Column <= cellTarget.Column + 1);
-            var foo = neighbouringCells.Count() < 2;
-
-            return foo;
+            var numberOfNeighbour = 2;
+            return GetNumberOfNeighboursOfCell(livingCells, cellTarget) < numberOfNeighbour;
+        }
+        
+        private bool HasMoreThanThreeLiveNeighbours(List<Cell> livingCells, Cell cellTarget)
+        {
+            var numberOfNeighbour = 3;
+            return GetNumberOfNeighboursOfCell(livingCells, cellTarget) > numberOfNeighbour;
         }
     }
 }
