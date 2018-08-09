@@ -5,21 +5,16 @@ namespace GameOfLife
 {
     public class DeadEvolutionRules : EvolutionRules
     {
+        private readonly List<int> NeighbourRules = new List<int> {2, 3};
+
         public bool CellDies(List<Cell> livingCells, Cell cellTarget)
         {
-            return HasFewerThanTwoLiveNeighbours(livingCells, cellTarget) || HasMoreThanThreeLiveNeighbours(livingCells , cellTarget);
+            return !CellHasTwoOrThreeNeighbour(livingCells, cellTarget);
         }
 
-        private bool HasFewerThanTwoLiveNeighbours(List<Cell> livingCells, Cell cellTarget)
+        private bool CellHasTwoOrThreeNeighbour(List<Cell> livingCells, Cell cellTarget)
         {
-            var numberOfNeighbour = 2;
-            return GetNumberOfNeighboursOfCell(livingCells, cellTarget) < numberOfNeighbour;
-        }
-        
-        private bool HasMoreThanThreeLiveNeighbours(List<Cell> livingCells, Cell cellTarget)
-        {
-            var numberOfNeighbour = 3;
-            return GetNumberOfNeighboursOfCell(livingCells, cellTarget) > numberOfNeighbour;
+            return NeighbourRules.Any(i => i == GetNumberOfNeighboursOfCell(livingCells, cellTarget));
         }
     }
 }

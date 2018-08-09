@@ -19,7 +19,7 @@ namespace GameOfLife.Tests
         }
 
         [Fact]
-        public void NotKillALiveCellThatTwoOrMoreNeighbour()
+        public void NotKillALiveCellThatTwoNeighbours()
         {
             var rules = new DeadEvolutionRules();
             var livingCells = new List<Cell>();
@@ -27,7 +27,6 @@ namespace GameOfLife.Tests
             livingCells.Add(cellTarget);
             livingCells.Add(new Cell(0, 1));
             livingCells.Add(new Cell(1, 0));
-            livingCells.Add(new Cell(0, 2));
             var isKilled = rules.CellDies(livingCells, cellTarget);
 
             Assert.False(isKilled);
