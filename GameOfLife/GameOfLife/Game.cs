@@ -7,8 +7,8 @@ namespace GameOfLife
         public Grid CurrentGrid { get; }
         private DeadEvolutionRules DeadEvolutionRules;
         private LiveEvolutionRules LiveEvolutionRules;
-        
-        
+
+
         public Game(Grid currentGrid)
         {
             CurrentGrid = currentGrid;
@@ -23,7 +23,25 @@ namespace GameOfLife
 
         public void Evolve()
         {
-            
+            IterateGrid();
+        }
+
+        private void IterateGrid()
+        {
+            for (int i = 0; i < CurrentGrid.GetLivingCells().Count; i++)
+            {
+                var currentCell = CurrentGrid.GetLivingCells()[i];
+                
+                if (LiveEvolutionRules.CellLives(CurrentGrid.GetLivingCells(),  currentCell,
+                    CurrentGrid.GetNumberOfNeighboursOfCell( currentCell)))
+                {
+                }
+
+                if (DeadEvolutionRules.CellDies(CurrentGrid.GetLivingCells(),  currentCell,
+                    CurrentGrid.GetNumberOfNeighboursOfCell( currentCell)))
+                {
+                }
+            }
         }
     }
 }
