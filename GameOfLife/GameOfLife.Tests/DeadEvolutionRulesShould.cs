@@ -13,7 +13,8 @@ namespace GameOfLife.Tests
             var cellTarget = new Cell(1, 1);
             livingCells.Add(cellTarget);
             livingCells.Add(new Cell(0, 1));
-            var isKilled = rules.CellDies(livingCells, cellTarget);
+            var numberOfNeighbours = 1;
+            var isKilled = rules.CellDies(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.True(isKilled);
         }
@@ -27,7 +28,8 @@ namespace GameOfLife.Tests
             livingCells.Add(cellTarget);
             livingCells.Add(new Cell(0, 1));
             livingCells.Add(new Cell(1, 0));
-            var isKilled = rules.CellDies(livingCells, cellTarget);
+            var numberOfNeighbours = 2;
+            var isKilled = rules.CellDies(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.False(isKilled);
         }
@@ -43,7 +45,8 @@ namespace GameOfLife.Tests
             livingCells.Add(new Cell(0, 2));
             livingCells.Add(new Cell(1, 0));
             livingCells.Add(new Cell(1, 2));
-            var isKilled = rules.CellDies(livingCells, cellTarget);
+            var numberOfNeighbours = 4;
+            var isKilled = rules.CellDies(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.True(isKilled);
         }
@@ -58,7 +61,8 @@ namespace GameOfLife.Tests
             livingCells.Add(new Cell(0, 1));
             livingCells.Add(new Cell(1, 0));
             livingCells.Add(new Cell(0, 2));
-            var isKilled = rules.CellDies(livingCells, cellTarget);
+            var numberOfNeighbours = 3;
+            var isKilled = rules.CellDies(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.False(isKilled);
         }

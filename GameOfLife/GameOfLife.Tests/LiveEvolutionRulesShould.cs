@@ -12,7 +12,8 @@ namespace GameOfLife.Tests
             var rules = new LiveEvolutionRules();
             var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0), new Cell(1,2)};
             var cellTarget = new Cell(1, 1);
-            var isAlive = rules.CellLives(livingCells, cellTarget);
+            var numberOfNeighbours = 3;
+            var isAlive = rules.CellLives(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.True(isAlive);
         }
@@ -23,7 +24,8 @@ namespace GameOfLife.Tests
             var rules = new LiveEvolutionRules();
             var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0)};
             var cellTarget = new Cell(1, 1);
-            var isAlive = rules.CellLives(livingCells, cellTarget);
+            var numberOfNeighbours = 2;
+            var isAlive = rules.CellLives(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.False(isAlive);
         }
@@ -34,7 +36,8 @@ namespace GameOfLife.Tests
             var rules = new LiveEvolutionRules();
             var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0), new Cell(2, 1), new Cell(1,2)};
             var cellTarget = new Cell(1, 1);
-            var isAlive = rules.CellLives(livingCells, cellTarget);
+            var numberOfNeighbours = 4;
+            var isAlive = rules.CellLives(livingCells, cellTarget, numberOfNeighbours);
 
             Assert.False(isAlive);
         }

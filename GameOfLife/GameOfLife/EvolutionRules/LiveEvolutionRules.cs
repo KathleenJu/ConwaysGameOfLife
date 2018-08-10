@@ -7,14 +7,9 @@ namespace GameOfLife
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
 
-        public bool CellLives(List<Cell> livingCells, Cell cellTarget)
+        public bool CellLives(List<Cell> livingCells, Cell cellTarget, int numberOfNeighbours)
         {
-            return CellHasExactlyThreeLiveNeighbours(livingCells, cellTarget);
-        }
-
-        private bool CellHasExactlyThreeLiveNeighbours(List<Cell> livingCells, Cell cellTarget)
-        {
-            return NumberOfNeighboursNeededtoLive.Any(i => i == GetNumberOfNeighboursOfCell(livingCells, cellTarget));
+            return NumberOfNeighboursNeededtoLive.Any(i => i == numberOfNeighbours);
         }
     }
 }
