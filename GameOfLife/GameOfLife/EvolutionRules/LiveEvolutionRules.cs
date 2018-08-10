@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GameOfLife
 {
-    public class LiveEvolutionRules : EvolutionRules
+    public class LiveEvolutionRules 
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
 
