@@ -28,8 +28,7 @@ namespace GameOfLife
 
         public int GetNumberOfNeighboursOfCell(Cell cellTarget)
         {
-            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell =>
-                cell.Row >= cellTarget.Row - 1 && cell.Row <= cellTarget.Row + 1 &&
+            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell => cell.Row >= cellTarget.Row - 1 && cell.Row <= cellTarget.Row + 1 &&
                 cell.Column >= cellTarget.Column - 1 && cell.Column <= cellTarget.Column + 1);
             
             return neighbouringCells.Count();

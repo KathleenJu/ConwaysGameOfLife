@@ -14,7 +14,7 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0, 1));
             grid.AddCell(new Cell(1, 2));
             grid.AddCell(new Cell(0, 2));
-            var numberOfNeighbours = 3;
+            const int numberOfNeighbours = 3;
             var actualNumberOfNeighbours = grid.GetNumberOfNeighboursOfCell(cellTarget);
             
             Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
@@ -27,7 +27,7 @@ namespace GameOfLife.Tests
             var grid = new Grid(5,5);
             var cellTarget = new Cell(1, 1);
             grid.AddCell(cellTarget);
-            var numberOfNeighbours = 0;
+            const int numberOfNeighbours = 0;
             var actualNumberOfNeighbours = grid.GetNumberOfNeighboursOfCell(cellTarget);
             
             Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
@@ -44,11 +44,10 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(5, 5));
             grid.AddCell(new Cell(4, 4));
             grid.AddCell(new Cell(0, 2));
-            var numberOfNeighbours = 2;
+            const int numberOfNeighbours = 2;
             var actualNumberOfNeighbours = grid.GetNumberOfNeighboursOfCell(cellTarget);
             
             Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
-
         }
     }
 }
