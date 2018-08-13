@@ -13,7 +13,7 @@ namespace GameOfLife.Tests
             var game = new Game(grid);
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
-            var newlivingCells = new List<Cell>{};
+            var newlivingCells = new List<Cell>();
                 
             Assert.Equal(game.CurrentGrid.GetLivingCells(), newlivingCells);
         }

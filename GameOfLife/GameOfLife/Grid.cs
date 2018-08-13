@@ -7,7 +7,7 @@ namespace GameOfLife
     {
         public int GridHeight { get; }
         public int GridWidth { get; }
-        private readonly List<Cell> LivingCells;
+        private List<Cell> LivingCells;
 
         public Grid(int gridHeight, int gridWidth)
         {
@@ -26,8 +26,15 @@ namespace GameOfLife
             LivingCells.Add(cell);
         }
 
+        public void RemoveCell(Cell cell)
+        {
+            LivingCells.Remove(cell);
+        }
+        
         public int GetNumberOfNeighboursOfCell(Cell cellTarget)
         {
+//            var cellOnEgdeOfGrid = cellTarget.Row == 0 || cellTarget.Row == GridHeight;
+//            var foo = LivingCells.Where(cell => cell != cellTarget).Where(cell => cellOnEgdeOfGrid? cell.Row >= cellTarget.Row - 1 && cell.Row <= cellTarget.Row + 1 && cell.Row == 0: );
             var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell => cell.Row >= cellTarget.Row - 1 && cell.Row <= cellTarget.Row + 1 &&
                 cell.Column >= cellTarget.Column - 1 && cell.Column <= cellTarget.Column + 1);
             

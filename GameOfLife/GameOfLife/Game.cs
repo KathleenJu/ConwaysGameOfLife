@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GameOfLife
 {
     public class Game
     {
         public Grid CurrentGrid { get; }
-        private DeadEvolutionRules DeadEvolutionRules;
-        private LiveEvolutionRules LiveEvolutionRules;
+        private readonly DeadEvolutionRules DeadEvolutionRules;
+        private readonly LiveEvolutionRules LiveEvolutionRules;
 
 
         public Game(Grid currentGrid)
@@ -28,18 +29,19 @@ namespace GameOfLife
 
         private void IterateGrid()
         {
-            for (int i = 0; i < CurrentGrid.GetLivingCells().Count; i++)
+            foreach (var i in CurrentGrid.GetLivingCells().ToList())
             {
-                var currentCell = CurrentGrid.GetLivingCells()[i];
+                var livingCells = CurrentGrid.GetLivingCells();
+                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfNeighboursOfCell(i);
                 
-                if (LiveEvolutionRules.CellLives(CurrentGrid.GetLivingCells(),  currentCell,
-                    CurrentGrid.GetNumberOfNeighboursOfCell( currentCell)))
+                if (LiveEvolutionRules.CellLives(livingCells, i, numberOfNeighboursOfCell))
                 {
+                    CurrentGrid.AddCell(i);
                 }
 
-                if (DeadEvolutionRules.CellDies(CurrentGrid.GetLivingCells(),  currentCell,
-                    CurrentGrid.GetNumberOfNeighboursOfCell( currentCell)))
+                if (DeadEvolutionRules.CellDies(livingCells, i, numberOfNeighboursOfCell))
                 {
+                    CurrentGrid.RemoveCell(i);
                 }
             }
         }
