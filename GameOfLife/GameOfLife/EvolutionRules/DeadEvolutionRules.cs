@@ -7,7 +7,7 @@ namespace GameOfLife
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {2, 3};
 
-        public bool CellDies(List<Cell> livingCells, Cell cellTarget, int numberOfNeighbours)
+        public bool CellDies(int numberOfNeighbours)
         {
             return !NumberOfNeighboursNeededtoLive.Any(i => i == numberOfNeighbours);
         }

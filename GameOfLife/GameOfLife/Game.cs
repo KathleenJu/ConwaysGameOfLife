@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace GameOfLife
@@ -15,6 +16,8 @@ namespace GameOfLife
             CurrentGrid = currentGrid;
             DeadEvolutionRules = new DeadEvolutionRules();
             LiveEvolutionRules = new LiveEvolutionRules();
+//            SetInitialStateOfGrid();
+//            Evolve();
         }
 
         public void SetInitialStateOfGrid(List<Cell> livingCells)
@@ -29,18 +32,17 @@ namespace GameOfLife
 
         private void IterateGrid()
         {
-            var livingCells = CurrentGrid.GetLivingCells().ToList();
-            var copyOfGrid = CurrentGrid;
+            var livingCells = CurrentGrid.GetLivingCells().ToImmutableList();
             foreach (var cell in livingCells)
             {
                 var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfNeighboursOfCell( cell);
 
-                if (LiveEvolutionRules.CellLives(livingCells, cell, numberOfNeighboursOfCell))
+                if (LiveEvolutionRules.CellLives(numberOfNeighboursOfCell))
                 {
                     CurrentGrid.AddCell(cell);
                 }
 
-                if (DeadEvolutionRules.CellDies(livingCells, cell, numberOfNeighboursOfCell))
+                if (DeadEvolutionRules.CellDies(numberOfNeighboursOfCell))
                 {
                     CurrentGrid.RemoveCell(cell);
                 }

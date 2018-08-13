@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace GameOfLife
@@ -7,7 +8,7 @@ namespace GameOfLife
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
 
-        public bool CellLives(List<Cell> livingCells, Cell cellTarget, int numberOfNeighbours)
+        public bool CellLives(int numberOfNeighbours)
         {
             return NumberOfNeighboursNeededtoLive.Any(i => i == numberOfNeighbours);
         }

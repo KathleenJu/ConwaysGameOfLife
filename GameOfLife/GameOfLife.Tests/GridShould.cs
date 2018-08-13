@@ -50,7 +50,7 @@ namespace GameOfLife.Tests
             Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
         }
         
-        //[Fact]
+        [Fact]
         public void GetTheCorrectNumberOfNeighboursOfALivingCellOnEdgeOfTheGrid()
         {
             var grid = new Grid(5,5);
