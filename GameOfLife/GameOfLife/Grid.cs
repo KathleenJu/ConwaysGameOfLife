@@ -31,30 +31,22 @@ namespace GameOfLife
             LivingCells.Remove(cell);
         }
 
-        public int GetNumberOfNeighboursOfCell(Cell cellTarget)
+        public int GetNumberOfLivingNeighboursOfCell(Cell cellTarget)
         {
-            var actualNeighbourCells = GetAllNeighboursOfCell(cellTarget);
-            var neighbouringCells = LivingCells.Where(cell => actualNeighbourCells.Contains(cell));
-            
+            var neighbouringCells = GetLivingNeighbouringCellsofCell(cellTarget);
+
             return neighbouringCells.Count();
         }
 
-        private List<Cell> GetAllNeighboursOfCell(Cell cellTarget)
+        private IEnumerable<Cell> GetLivingNeighbouringCellsofCell(Cell cellTarget)
         {
-            var actualNeighbourCells = new List<Cell>();
-            for (var row = cellTarget.Row - 1; row <= cellTarget.Row + 1; row++)
-            {
-                for (var column = cellTarget.Column - 1; column <= cellTarget.Column + 1; column++)
-                {
-                    row = row == 0 ? GridHeight - 1 : row;
-                    row = row == GridHeight - 1 ? 0 : row;
-                    column = column == 0 ? GridWidth - 1 : column;
-                    column = column == GridWidth - 1 ? 0 : column;
-                    actualNeighbourCells.Add(new Cell(row, column));
-                }
-            }
-
-            return actualNeighbourCells;
+            var topRow = cellTarget.Row == 0 ? GridHeight - 1 : cellTarget.Row - 1;
+            var bottomRow = cellTarget.Row == GridHeight - 1 ? 0 : cellTarget.Row + 1;
+            var leftColumn = cellTarget.Column == 0 ? GridWidth - 1 : cellTarget.Column - 1;
+            var rightColumn = cellTarget.Column == GridWidth - 1 ? 0 : cellTarget.Column + 1;
+            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell => cell.Row == topRow || cell.Row == cellTarget.Row ||  cell.Row == bottomRow 
+                                                              && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
+            return neighbouringCells;
         }
     }
 }

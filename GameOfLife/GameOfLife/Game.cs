@@ -35,7 +35,7 @@ namespace GameOfLife
             var livingCells = CurrentGrid.GetLivingCells().ToImmutableList();
             foreach (var cell in livingCells)
             {
-                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfNeighboursOfCell( cell);
+                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfLivingNeighboursOfCell( cell);
 
                 if (LiveEvolutionRules.CellLives(numberOfNeighboursOfCell))
                 {
