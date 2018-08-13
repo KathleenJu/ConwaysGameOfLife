@@ -29,19 +29,20 @@ namespace GameOfLife
 
         private void IterateGrid()
         {
-            foreach (var i in CurrentGrid.GetLivingCells().ToList())
+            var livingCells = CurrentGrid.GetLivingCells().ToList();
+            var copyOfGrid = CurrentGrid;
+            foreach (var cell in livingCells)
             {
-                var livingCells = CurrentGrid.GetLivingCells();
-                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfNeighboursOfCell(i);
-                
-                if (LiveEvolutionRules.CellLives(livingCells, i, numberOfNeighboursOfCell))
+                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfNeighboursOfCell( cell);
+
+                if (LiveEvolutionRules.CellLives(livingCells, cell, numberOfNeighboursOfCell))
                 {
-                    CurrentGrid.AddCell(i);
+                    CurrentGrid.AddCell(cell);
                 }
 
-                if (DeadEvolutionRules.CellDies(livingCells, i, numberOfNeighboursOfCell))
+                if (DeadEvolutionRules.CellDies(livingCells, cell, numberOfNeighboursOfCell))
                 {
-                    CurrentGrid.RemoveCell(i);
+                    CurrentGrid.RemoveCell(cell);
                 }
             }
         }

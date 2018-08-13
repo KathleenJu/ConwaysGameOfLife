@@ -7,7 +7,7 @@ namespace GameOfLife.Tests
     {
         
         [Fact]
-        public void ChangeTheStateOfTheCellToAliveWhenItHasThreeLiveNeighbours()
+        public void ChangeTheStateOfDeadCellToAliveWhenItHasThreeLiveNeighbours()
         {
             var rules = new LiveEvolutionRules();
             var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0), new Cell(1,2)};
