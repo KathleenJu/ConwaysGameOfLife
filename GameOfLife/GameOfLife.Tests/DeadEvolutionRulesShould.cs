@@ -13,7 +13,7 @@ namespace GameOfLife.Tests
             var grid = new Grid(5,5);
             grid.AddCell(cellTarget);
             grid.AddCell(new Cell(0,1));
-            var neighboursOfACell = grid.GetLivingNeighbourCellsOfCell(cellTarget);
+            var neighboursOfACell = grid.GetLivingNeighboursOfCell(cellTarget);
             var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.True(isKilled);
@@ -28,7 +28,7 @@ namespace GameOfLife.Tests
             grid.AddCell(cellTarget);
             grid.AddCell(new Cell(0,1));
             grid.AddCell(new Cell(1,0));
-            var neighboursOfACell = grid.GetLivingNeighbourCellsOfCell(cellTarget);
+            var neighboursOfACell = grid.GetLivingNeighboursOfCell(cellTarget);
             var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.False(isKilled);
@@ -45,7 +45,7 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0,2));
             grid.AddCell(new Cell(1,0));
             grid.AddCell(new Cell(1,2));
-            var neighboursOfACell = grid.GetLivingNeighbourCellsOfCell(cellTarget);
+            var neighboursOfACell = grid.GetLivingNeighboursOfCell(cellTarget);
             var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.True(isKilled);
@@ -61,7 +61,7 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0,1));
             grid.AddCell(new Cell(0,2));
             grid.AddCell(new Cell(1,0));
-            var neighboursOfACell = grid.GetLivingNeighbourCellsOfCell(cellTarget);
+            var neighboursOfACell = grid.GetLivingNeighboursOfCell(cellTarget);
             var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.False(isKilled);

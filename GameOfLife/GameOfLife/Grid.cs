@@ -35,21 +35,14 @@ namespace GameOfLife
             LivingCells.Remove(cell);
         }
 
-        public int GetNumberOfLivingNeighboursOfCell(Cell cellTarget)
+        public IEnumerable<Cell> GetLivingNeighboursOfCell(Cell cellTarget)
         {
-            var neighbouringCells = GetLivingNeighbourCellsOfCell(cellTarget);
-
-            return neighbouringCells.Count();
-        }
-
-        public IEnumerable<Cell> GetLivingNeighbourCellsOfCell(Cell cellTarget)
-        {
-            var allNeighbourCellsOfCell = GetAllNeighbourCellsOfCell(cellTarget);
-            var allLivingNeighboursOfCell = allNeighbourCellsOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Row == neighbourCell.Row && livingCell.Column == neighbourCell.Column));
+            var allNeighbourOfCell = GetAllNeighboursOfCell(cellTarget);
+            var allLivingNeighboursOfCell = allNeighbourOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Row == neighbourCell.Row && livingCell.Column == neighbourCell.Column));
             return allLivingNeighboursOfCell;
         }
 
-        public List<Cell> GetAllNeighbourCellsOfCell(Cell cellTarget)
+        public IEnumerable<Cell> GetAllNeighboursOfCell(Cell cellTarget)
         {
             var neighbourCells = new List<Cell>();
             for (var row = cellTarget.Row - 1; row <= cellTarget.Row + 1; row++)

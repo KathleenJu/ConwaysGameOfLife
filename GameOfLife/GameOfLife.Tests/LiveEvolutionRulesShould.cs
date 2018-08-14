@@ -17,9 +17,9 @@ namespace GameOfLife.Tests
             var neighboursOfAliveCell = new List<IEnumerable<Cell>>
             {
 //                grid.GetAllNeighbourCellsOfCell(new Cell(0,2));
-                grid.GetLivingNeighbourCellsOfCell(new Cell(0, 2)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(1, 0))
+                grid.GetLivingNeighboursOfCell(new Cell(0, 2)),
+                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
+                grid.GetLivingNeighboursOfCell(new Cell(1, 0))
             };
             var expectedOutput = new List<Cell> {new Cell(1, 1), new Cell(0, 1)};
             var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
@@ -37,9 +37,9 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(1, 0));
             var neighboursOfAliveCell = new List<IEnumerable<Cell>>
             {
-                grid.GetLivingNeighbourCellsOfCell(new Cell(1, 1)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(1, 0))
+                grid.GetLivingNeighboursOfCell(new Cell(1, 1)),
+                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
+                grid.GetLivingNeighboursOfCell(new Cell(1, 0))
             };
             var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
             var expectedOutput = new List<Cell> {new Cell(1, 1)};
@@ -60,10 +60,10 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(1, 2));
             var neighboursOfAliveCell = new List<IEnumerable<Cell>>
             {
-                grid.GetLivingNeighbourCellsOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(1, 0)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(2, 1)),
-                grid.GetLivingNeighbourCellsOfCell(new Cell(1, 2))
+                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
+                grid.GetLivingNeighboursOfCell(new Cell(1, 0)),
+                grid.GetLivingNeighboursOfCell(new Cell(2, 1)),
+                grid.GetLivingNeighboursOfCell(new Cell(1, 2))
             };
             var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
             var expectedOutput = new List<Cell> {new Cell(0, 1), new Cell(0, 1), new Cell(2,1), new Cell(1,2)};
