@@ -5,14 +5,14 @@ namespace GameOfLife
 {
     public class Grid
     {
-        public int GridHeight { get; }
-        public int GridWidth { get; }
+        public int Height { get; }
+        public int Width { get; }
         private readonly List<Cell> LivingCells;
 
-        public Grid(int gridHeight, int gridWidth)
+        public Grid(int height, int width)
         {
-            GridHeight = gridHeight;
-            GridWidth = gridWidth;
+            Height = height;
+            Width = width;
             LivingCells = new List<Cell>();
         }
 
@@ -23,7 +23,10 @@ namespace GameOfLife
 
         public void AddCell(Cell cell)
         {
-            LivingCells.Add(cell);
+            if (!LivingCells.Contains(cell))
+            {
+                LivingCells.Add(cell);
+            }
         }
 
         public void RemoveCell(Cell cell)
@@ -38,14 +41,16 @@ namespace GameOfLife
             return neighbouringCells.Count();
         }
 
-        private IEnumerable<Cell> GetLivingNeighbouringCellsofCell(Cell cellTarget)
+        public IEnumerable<Cell> GetLivingNeighbouringCellsofCell(Cell cellTarget)
         {
-            var topRow = cellTarget.Row == 0 ? GridHeight - 1 : cellTarget.Row - 1;
-            var bottomRow = cellTarget.Row == GridHeight - 1 ? 0 : cellTarget.Row + 1;
-            var leftColumn = cellTarget.Column == 0 ? GridWidth - 1 : cellTarget.Column - 1;
-            var rightColumn = cellTarget.Column == GridWidth - 1 ? 0 : cellTarget.Column + 1;
-            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell => cell.Row == topRow || cell.Row == cellTarget.Row ||  cell.Row == bottomRow 
-                                                              && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
+            var topRow = cellTarget.Row == 0 ? Height - 1 : cellTarget.Row - 1;
+            var bottomRow = cellTarget.Row == Height - 1 ? 0 : cellTarget.Row + 1;
+            var leftColumn = cellTarget.Column == 0 ? Width - 1 : cellTarget.Column - 1;
+            var rightColumn = cellTarget.Column == Width - 1 ? 0 : cellTarget.Column + 1;
+
+            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell =>
+                cell.Row == topRow || cell.Row == cellTarget.Row || cell.Row == bottomRow
+                && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
             return neighbouringCells;
         }
     }

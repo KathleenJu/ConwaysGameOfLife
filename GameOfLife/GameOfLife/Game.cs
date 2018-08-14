@@ -27,22 +27,31 @@ namespace GameOfLife
 
         public void Evolve()
         {
-            IterateGrid();
+//            while (true)
+//            {
+                IterateGrid();
+//            }
         }
 
         private void IterateGrid()
         {
-            var livingCells = CurrentGrid.GetLivingCells().ToImmutableList();
+            var livingCells = CurrentGrid.GetLivingCells().ToList();
+            var listOfAllNeighboursForLivingCells = new List<IEnumerable<Cell>>();
+
             foreach (var cell in livingCells)
             {
-                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfLivingNeighboursOfCell( cell);
+                var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfLivingNeighboursOfCell(cell);
+                var livingNeighbouringCellsofCell = CurrentGrid.GetLivingNeighbouringCellsofCell(cell);
+                listOfAllNeighboursForLivingCells.Add(livingNeighbouringCellsofCell);
 
-                if (LiveEvolutionRules.CellLives(numberOfNeighboursOfCell))
+                if (LiveEvolutionRules.GetCellsThatShouldLive(livingNeighbouringCellsofCell, listOfAllNeighboursForLivingCells))
                 {
-                    CurrentGrid.AddCell(cell);
+                    if (!livingCells.Contains(cell))
+                    {
+                        CurrentGrid.AddCell(cell);
+                    }
                 }
-
-                if (DeadEvolutionRules.CellDies(numberOfNeighboursOfCell))
+                if (DeadEvolutionRules.CellDies(livingNeighbouringCellsofCell))
                 {
                     CurrentGrid.RemoveCell(cell);
                 }

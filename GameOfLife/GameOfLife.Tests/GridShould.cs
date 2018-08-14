@@ -89,5 +89,20 @@ namespace GameOfLife.Tests
             Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
 
         }
+        [Fact]
+        public void NotAddCelIfAlreadyExist()
+        {
+//            var grid = new Grid(5,5);
+//            var cellTarget = new Cell(1, 1);
+//            grid.AddCell(cellTarget);
+//            grid.AddCell(new Cell(0, 1));
+//            grid.AddCell(new Cell(1, 2));
+//            grid.AddCell(new Cell(0, 2));
+//            const int numberOfNeighbours = 3;
+//            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+//            
+//            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+
+        }
     }
 }

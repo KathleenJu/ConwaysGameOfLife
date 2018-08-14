@@ -9,12 +9,12 @@ namespace GameOfLife.Tests
         public void KillALiveCellThatHasFewerThanTwoNeighbours()
         {
             var rules = new DeadEvolutionRules();
-            var livingCells = new List<Cell>();
             var cellTarget = new Cell(1, 1);
-            livingCells.Add(cellTarget);
-            livingCells.Add(new Cell(0, 1));
-            var numberOfNeighbours = 1;
-            var isKilled = rules.CellDies(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.True(isKilled);
         }
@@ -23,13 +23,13 @@ namespace GameOfLife.Tests
         public void NotKillALiveCellThatTwoNeighbours()
         {
             var rules = new DeadEvolutionRules();
-            var livingCells = new List<Cell>();
             var cellTarget = new Cell(1, 1);
-            livingCells.Add(cellTarget);
-            livingCells.Add(new Cell(0, 1));
-            livingCells.Add(new Cell(1, 0));
-            var numberOfNeighbours = 2;
-            var isKilled = rules.CellDies(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(1,0));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.False(isKilled);
         }
@@ -38,15 +38,15 @@ namespace GameOfLife.Tests
         public void KillALiveCellThatHasMoreThanThreeNeighbour()
         {
             var rules = new DeadEvolutionRules();
-            var livingCells = new List<Cell>();
             var cellTarget = new Cell(1, 1);
-            livingCells.Add(cellTarget);
-            livingCells.Add(new Cell(0, 1));
-            livingCells.Add(new Cell(0, 2));
-            livingCells.Add(new Cell(1, 0));
-            livingCells.Add(new Cell(1, 2));
-            var numberOfNeighbours = 4;
-            var isKilled = rules.CellDies(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(0,2));
+            grid.AddCell(new Cell(1,0));
+            grid.AddCell(new Cell(1,2));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.True(isKilled);
         }
@@ -55,14 +55,14 @@ namespace GameOfLife.Tests
         public void NotKillALiveCellThatHasThreeNeighbour()
         {
             var rules = new DeadEvolutionRules();
-            var livingCells = new List<Cell>();
             var cellTarget = new Cell(1, 1);
-            livingCells.Add(cellTarget);
-            livingCells.Add(new Cell(0, 1));
-            livingCells.Add(new Cell(1, 0));
-            livingCells.Add(new Cell(0, 2));
-            var numberOfNeighbours = 3;
-            var isKilled = rules.CellDies(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(0,2));
+            grid.AddCell(new Cell(1,0));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isKilled = rules.CellDies(neighboursOfACell);
 
             Assert.False(isKilled);
         }

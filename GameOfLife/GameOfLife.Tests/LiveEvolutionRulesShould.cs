@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Moq;
 using Xunit;
 
 namespace GameOfLife.Tests
@@ -10,10 +11,13 @@ namespace GameOfLife.Tests
         public void ChangeTheStateOfDeadCellToAliveWhenItHasThreeLiveNeighbours()
         {
             var rules = new LiveEvolutionRules();
-            var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0), new Cell(1,2)};
-            var cellTarget = new Cell(1, 1);
-            var numberOfNeighbours = 3;
-            var isAlive = rules.CellLives(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(new Cell(0, 2));
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(1,0));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(new Cell(0, 2));
+            var cellsThatShouldLive = new List<Cell>{ new Cell(1,1), new Cell(0,1)};
+            var isAlive = rules.GetCellsThatShouldLive(neighboursOfACell, It.IsAny<List<IEnumerable<Cell>>>());
 
             Assert.True(isAlive);
         }
@@ -22,10 +26,13 @@ namespace GameOfLife.Tests
         public void NotChangeTheStateOfTheCellToAliveWhenItHasTwoLiveNeighbours()
         {
             var rules = new LiveEvolutionRules();
-            var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0)};
             var cellTarget = new Cell(1, 1);
-            var numberOfNeighbours = 2;
-            var isAlive = rules.CellLives(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(1,0));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isAlive = rules.GetCellsThatShouldLive(neighboursOfACell, It.IsAny<List<IEnumerable<Cell>>>());
 
             Assert.False(isAlive);
         }
@@ -34,10 +41,15 @@ namespace GameOfLife.Tests
         public void NotChangeTheStateOfTheCellToAliveWhenItHasFourLiveNeighbours()
         {
             var rules = new LiveEvolutionRules();
-            var livingCells = new List<Cell>{new Cell(0, 1), new Cell(1,0), new Cell(2, 1), new Cell(1,2)};
             var cellTarget = new Cell(1, 1);
-            var numberOfNeighbours = 4;
-            var isAlive = rules.CellLives(numberOfNeighbours);
+            var grid = new Grid(5,5);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(0,1));
+            grid.AddCell(new Cell(1,0));
+            grid.AddCell(new Cell(2,1));
+            grid.AddCell(new Cell(1,2));
+            var neighboursOfACell = grid.GetLivingNeighbouringCellsofCell(cellTarget);
+            var isAlive = rules.GetCellsThatShouldLive(neighboursOfACell, It.IsAny<List<IEnumerable<Cell>>>());
 
             Assert.False(isAlive);
         }
