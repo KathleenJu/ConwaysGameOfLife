@@ -9,7 +9,7 @@ namespace GameOfLife.Tests
     public class GridShould
     {
         [Fact]
-        public void GetTheCorrectNumberOfNeighboursOfALivingCell()
+        public void GetTheLivingNeighboursOfALivingCell()
         {
             var grid = new Grid(5, 5);
             var cellTarget = new Cell(1, 1);
@@ -17,10 +17,16 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0, 1));
             grid.AddCell(new Cell(1, 2));
             grid.AddCell(new Cell(0, 2));
-            const int numberOfNeighbours = 3;
-            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+            var expectedNeighbourCells = new List<Cell>
+            {
+                new Cell(0, 1),
+                new Cell(0, 2),
+                new Cell(1, 2)
+            };
+            var actualNeighbourCells = grid.GetLivingNeighbourCellsOfCell(cellTarget);
 
-            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(3, actualNeighbourCells.Count());
         }
 
         [Fact]
@@ -29,10 +35,11 @@ namespace GameOfLife.Tests
             var grid = new Grid(5, 5);
             var cellTarget = new Cell(1, 1);
             grid.AddCell(cellTarget);
-            const int numberOfNeighbours = 0;
-            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+            var expectedNeighbourCells = new List<Cell>();
+            var actualNeighbourCells = grid.GetLivingNeighbourCellsOfCell(cellTarget);
 
-            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(0, actualNeighbourCells.Count());
         }
 
         [Fact]
@@ -43,12 +50,18 @@ namespace GameOfLife.Tests
             grid.AddCell(cellTarget);
             grid.AddCell(new Cell(1, 2));
             grid.AddCell(new Cell(4, 4));
-            grid.AddCell(new Cell(4, 4));
+            grid.AddCell(new Cell(1, 3));
+            grid.AddCell(new Cell(3, 1));
             grid.AddCell(new Cell(0, 2));
-            const int numberOfNeighbours = 2;
-            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+            var expectedNeighbourCells = new List<Cell>
+            {
+                new Cell(0, 2),
+                new Cell(1, 2)
+            };
+            var actualNeighbourCells = grid.GetLivingNeighbourCellsOfCell(cellTarget);
 
-            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(2, actualNeighbourCells.Count());
         }
 
         [Fact]
@@ -61,10 +74,16 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(2, 3));
             grid.AddCell(new Cell(0, 0));
             grid.AddCell(new Cell(3, 4));
-            const int numberOfNeighbours = 4;
-            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+            var expectedNeighbourCells = new List<Cell>
+            {
+                new Cell(2, 0),
+                new Cell(2, 3),
+                new Cell(3, 4)
+            };
+            var actualNeighbourCells = grid.GetLivingNeighbourCellsOfCell(cellTarget);
 
-            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(3, actualNeighbourCells.Count());
         }
 
         [Fact]
@@ -82,10 +101,20 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(3, 3));
             grid.AddCell(new Cell(0, 2));
             grid.AddCell(new Cell(1, 3));
-            const int numberOfNeighbours = 7;
-            var actualNumberOfNeighbours = grid.GetNumberOfLivingNeighboursOfCell(cellTarget);
+            var expectedNeighbourCells = new List<Cell>
+            {
+                new Cell(0, 0),
+                new Cell(0, 1),
+                new Cell(2, 0),
+                new Cell(3, 1),
+                new Cell(0, 3),
+                new Cell(2, 3),
+                new Cell(3, 3)
+            };
+            var actualNeighbourCells = grid.GetLivingNeighbourCellsOfCell(cellTarget);
 
-            Assert.Equal(actualNumberOfNeighbours, numberOfNeighbours);
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(7, actualNeighbourCells.Count());
         }
 
         [Fact]
@@ -118,7 +147,7 @@ namespace GameOfLife.Tests
             };
             var actualNumberOfNeighbours = grid.GetAllNeighbourCellsOfCell(cellTarget);
 
-            expectedOutput.Should().BeEquivalentTo( actualNumberOfNeighbours);
+            expectedOutput.Should().BeEquivalentTo(actualNumberOfNeighbours);
             Assert.True(actualNumberOfNeighbours.Count == 8);
         }
 
@@ -140,8 +169,8 @@ namespace GameOfLife.Tests
             };
             var actualNumberOfNeighbours = grid.GetAllNeighbourCellsOfCell(cellTarget);
 
-            expectedOutput.Should().BeEquivalentTo( actualNumberOfNeighbours);
-            Assert.Equal(8, actualNumberOfNeighbours.Count());
+            expectedOutput.Should().BeEquivalentTo(actualNumberOfNeighbours);
+            Assert.Equal(8, actualNumberOfNeighbours.Count);
         }
     }
 }

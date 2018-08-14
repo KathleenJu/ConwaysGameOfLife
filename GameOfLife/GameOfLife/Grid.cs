@@ -44,16 +44,9 @@ namespace GameOfLife
 
         public IEnumerable<Cell> GetLivingNeighbourCellsOfCell(Cell cellTarget)
         {
-            var topRow = cellTarget.Row == 0 ? Height - 1 : cellTarget.Row - 1;
-            var bottomRow = cellTarget.Row == Height - 1 ? 0 : cellTarget.Row + 1;
-            var leftColumn = cellTarget.Column == 0 ? Width - 1 : cellTarget.Column - 1;
-            var rightColumn = cellTarget.Column == Width - 1 ? 0 : cellTarget.Column + 1;
-
-            var neighbouringCells = LivingCells.Where(cell => cell != cellTarget).Where(cell =>
-                cell.Row == topRow || cell.Row == cellTarget.Row || cell.Row == bottomRow
-                && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
-            return neighbouringCells;
-            //GetAllNeighbourCellsOfCell.Where(cell is alive)
+            var allNeighbourCellsOfCell = GetAllNeighbourCellsOfCell(cellTarget);
+            var allLivingNeighboursOfCell = allNeighbourCellsOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Row == neighbourCell.Row && livingCell.Column == neighbourCell.Column));
+            return allLivingNeighboursOfCell;
         }
 
         public List<Cell> GetAllNeighbourCellsOfCell(Cell cellTarget)
@@ -74,7 +67,6 @@ namespace GameOfLife
                     }
                 }
             }
-
             return neighbourCells;
         }
     }
