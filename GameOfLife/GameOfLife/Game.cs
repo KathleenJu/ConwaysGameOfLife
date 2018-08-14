@@ -41,20 +41,20 @@ namespace GameOfLife
             foreach (var cell in livingCells)
             {
                 var numberOfNeighboursOfCell = CurrentGrid.GetNumberOfLivingNeighboursOfCell(cell);
-                var livingNeighbouringCellsofCell = CurrentGrid.GetLivingNeighbouringCellsofCell(cell);
+                var livingNeighbouringCellsofCell = CurrentGrid.GetLivingNeighbourCellsOfCell(cell);
                 listOfAllNeighboursForLivingCells.Add(livingNeighbouringCellsofCell);
 
-                if (LiveEvolutionRules.GetCellsThatShouldLive(livingNeighbouringCellsofCell, listOfAllNeighboursForLivingCells))
-                {
-                    if (!livingCells.Contains(cell))
-                    {
-                        CurrentGrid.AddCell(cell);
-                    }
-                }
-                if (DeadEvolutionRules.CellDies(livingNeighbouringCellsofCell))
-                {
-                    CurrentGrid.RemoveCell(cell);
-                }
+//                if (LiveEvolutionRules.GetCellsThatShouldLive(listOfAllNeighboursForLivingCells))
+//                {
+//                    if (!livingCells.Contains(cell))
+//                    {
+//                        CurrentGrid.AddCell(cell);
+//                    }
+//                }
+//                if (DeadEvolutionRules.CellDies(livingNeighbouringCellsofCell))
+//                {
+//                    CurrentGrid.RemoveCell(cell);
+//                }
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GameOfLife
@@ -36,12 +37,12 @@ namespace GameOfLife
 
         public int GetNumberOfLivingNeighboursOfCell(Cell cellTarget)
         {
-            var neighbouringCells = GetLivingNeighbouringCellsofCell(cellTarget);
+            var neighbouringCells = GetLivingNeighbourCellsOfCell(cellTarget);
 
             return neighbouringCells.Count();
         }
 
-        public IEnumerable<Cell> GetLivingNeighbouringCellsofCell(Cell cellTarget)
+        public IEnumerable<Cell> GetLivingNeighbourCellsOfCell(Cell cellTarget)
         {
             var topRow = cellTarget.Row == 0 ? Height - 1 : cellTarget.Row - 1;
             var bottomRow = cellTarget.Row == Height - 1 ? 0 : cellTarget.Row + 1;
@@ -52,6 +53,23 @@ namespace GameOfLife
                 cell.Row == topRow || cell.Row == cellTarget.Row || cell.Row == bottomRow
                 && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
             return neighbouringCells;
+        }
+
+        public IEnumerable<Cell> GetAllNeighbourCellsOfCell(Cell cellTarget)
+        {
+            var foo = new List<Cell>();
+            for (var row = cellTarget.Row - 1; row <= cellTarget.Row + 1; row++)
+            {
+                var topRow = cellTarget.Row == 0 ? Height - 1 : cellTarget.Row - 1;
+                var bottomRow = cellTarget.Row == Height - 1 ? 0 : cellTarget.Row + 1;
+                var leftColumn = cellTarget.Column == 0 ? Width - 1 : cellTarget.Column - 1;
+                var rightColumn = cellTarget.Column == Width - 1 ? 0 : cellTarget.Column + 1;
+                for (var col = cellTarget.Column - 1; col <= cellTarget.Column + 1; col++)
+                {
+                    foo.Add(new Cell(row, col));
+                }
+            }
+            return foo;
         }
     }
 }

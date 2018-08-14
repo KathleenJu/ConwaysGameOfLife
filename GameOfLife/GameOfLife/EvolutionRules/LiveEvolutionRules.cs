@@ -8,9 +8,11 @@ namespace GameOfLife
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
 
-        public bool GetCellsThatShouldLive(IEnumerable<Cell> neighbouringCells, List<IEnumerable<Cell>> listOfAllNeighboursOfLivingCells)
+        public List<Cell> GetCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllNeighboursOfLivingCells)
         {
-            return NumberOfNeighboursNeededtoLive.Any(i => i == neighbouringCells.Count());
+            var foo = listOfAllNeighboursOfLivingCells.SelectMany(x => x).Distinct()
+                .Where(w => listOfAllNeighboursOfLivingCells.TrueForAll(t => t.Contains(w))).ToList();
+            return foo;
         }
 
     }
