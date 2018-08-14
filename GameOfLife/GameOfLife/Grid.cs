@@ -24,7 +24,7 @@ namespace GameOfLife
 
         public void AddCell(Cell cell)
         {
-            if (!LivingCells.Contains(cell))
+            if (!LivingCells.Any(c => c.Row == cell.Row && c.Column == cell.Column))
             {
                 LivingCells.Add(cell);
             }
@@ -53,23 +53,29 @@ namespace GameOfLife
                 cell.Row == topRow || cell.Row == cellTarget.Row || cell.Row == bottomRow
                 && cell.Column == leftColumn || cell.Column == cellTarget.Column || cell.Column == rightColumn);
             return neighbouringCells;
+            //GetAllNeighbourCellsOfCell.Where(cell is alive)
         }
 
-        public IEnumerable<Cell> GetAllNeighbourCellsOfCell(Cell cellTarget)
+        public List<Cell> GetAllNeighbourCellsOfCell(Cell cellTarget)
         {
-            var foo = new List<Cell>();
+            var neighbourCells = new List<Cell>();
             for (var row = cellTarget.Row - 1; row <= cellTarget.Row + 1; row++)
             {
-                var topRow = cellTarget.Row == 0 ? Height - 1 : cellTarget.Row - 1;
-                var bottomRow = cellTarget.Row == Height - 1 ? 0 : cellTarget.Row + 1;
-                var leftColumn = cellTarget.Column == 0 ? Width - 1 : cellTarget.Column - 1;
-                var rightColumn = cellTarget.Column == Width - 1 ? 0 : cellTarget.Column + 1;
+                var actualRow = row < 0 ? Height - 1 : row;
+                actualRow = row > Height - 1 ? 0 : actualRow;
                 for (var col = cellTarget.Column - 1; col <= cellTarget.Column + 1; col++)
                 {
-                    foo.Add(new Cell(row, col));
+                    var actualCol = col < 0 ? Width - 1 : col;
+                    actualCol = col > Width - 1 ? 0 : actualCol;
+                    if (actualRow != cellTarget.Row || actualCol != cellTarget.Column)
+                    {
+                        var cell = new Cell(actualRow, actualCol);
+                            neighbourCells.Add(cell);
+                    }
                 }
             }
-            return foo;
+
+            return neighbourCells;
         }
     }
 }
