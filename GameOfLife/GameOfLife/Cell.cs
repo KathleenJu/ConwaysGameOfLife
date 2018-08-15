@@ -10,5 +10,10 @@
             Row = row;
             Column = column;
         }
+
+        public bool Equals(Cell cell)
+        {
+            return cell.Row == Row && cell.Column == Column;
+        }
     }
 }

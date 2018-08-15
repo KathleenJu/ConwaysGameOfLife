@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -14,17 +15,19 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0, 2));
             grid.AddCell(new Cell(0, 1));
             grid.AddCell(new Cell(1, 0));
+
             var neighboursOfAliveCell = new List<IEnumerable<Cell>>
             {
-//                grid.GetAllNeighbourCellsOfCell(new Cell(0,2));
-                grid.GetLivingNeighboursOfCell(new Cell(0, 2)),
-                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighboursOfCell(new Cell(1, 0))
+                grid.GetAllNeighboursOfCell(new Cell(0, 2)),
+                grid.GetAllNeighboursOfCell(new Cell(0, 1)),
+                grid.GetAllNeighboursOfCell(new Cell(1, 0))
             };
-            var expectedOutput = new List<Cell> {new Cell(1, 1), new Cell(0, 1)};
+
+            var expectedLiveCells = new List<Cell> {new Cell(1, 1), new Cell(0, 1)};
             var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
 
-            Assert.Equal(expectedOutput, cellsThatShouldLive);
+            expectedLiveCells.Should().BeEquivalentTo(cellsThatShouldLive);
+            Assert.Equal(2, cellsThatShouldLive.Count);
         }
 
         [Fact]
@@ -66,7 +69,7 @@ namespace GameOfLife.Tests
                 grid.GetLivingNeighboursOfCell(new Cell(1, 2))
             };
             var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
-            var expectedOutput = new List<Cell> {new Cell(0, 1), new Cell(0, 1), new Cell(2,1), new Cell(1,2)};
+            var expectedOutput = new List<Cell> {new Cell(0, 1), new Cell(0, 1), new Cell(2, 1), new Cell(1, 2)};
 
             Assert.Equal(expectedOutput, cellsThatShouldLive);
         }

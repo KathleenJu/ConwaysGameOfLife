@@ -24,7 +24,7 @@ namespace GameOfLife
 
         public void AddCell(Cell cell)
         {
-            if (!LivingCells.Any(c => c.Row == cell.Row && c.Column == cell.Column))
+            if (!LivingCells.Any(c => c.Equals(cell)))
             {
                 LivingCells.Add(cell);
             }
@@ -38,7 +38,7 @@ namespace GameOfLife
         public IEnumerable<Cell> GetLivingNeighboursOfCell(Cell cellTarget)
         {
             var allNeighbourOfCell = GetAllNeighboursOfCell(cellTarget);
-            var allLivingNeighboursOfCell = allNeighbourOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Row == neighbourCell.Row && livingCell.Column == neighbourCell.Column));
+            var allLivingNeighboursOfCell = allNeighbourOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Equals(neighbourCell)));
             return allLivingNeighboursOfCell;
         }
 
@@ -53,14 +53,11 @@ namespace GameOfLife
                 {
                     var actualCol = col < 0 ? Width - 1 : col;
                     actualCol = col > Width - 1 ? 0 : actualCol;
-                    if (actualRow != cellTarget.Row || actualCol != cellTarget.Column)
-                    {
-                        var cell = new Cell(actualRow, actualCol);
-                            neighbourCells.Add(cell);
-                    }
+                    neighbourCells.Add(new Cell(actualRow, actualCol));
                 }
             }
-            return neighbourCells;
+                    
+            return neighbourCells.Where(cell => !cell.Equals(cellTarget));
         }
     }
 }
