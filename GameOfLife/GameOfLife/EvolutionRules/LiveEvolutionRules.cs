@@ -6,17 +6,16 @@ namespace GameOfLife
 {
     public class LiveEvolutionRules
     {
-        private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
+        private const int NumberOfNeighboursNeededtoLive = 3;
 
-        public List<Cell> GetDeadCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllNeighboursOfLivingCells)
+        public List<Cell> GetDeadCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllDeadNeighboursOfLivingCells)
         {
             var dict = new Dictionary<Cell, int>();
-            foreach (var neighboursOfLivingCell in listOfAllNeighboursOfLivingCells)
+            foreach (var deadNeighboursOfLivingCell in listOfAllDeadNeighboursOfLivingCells)
             {
-                foreach (var cell in neighboursOfLivingCell)
+                foreach (var cell in deadNeighboursOfLivingCell)
                 {
-                    var key = dict.Where(c => c.Key.Row == cell.Row && c.Key.Column == cell.Column)
-                        .Select(x => x.Key);
+                    var key = dict.Where(cellInDict => cellInDict.Key.Row == cell.Row && cellInDict.Key.Column == cell.Column).Select(x => x.Key);
                     if (!key.Any())
                     {
                         dict.Add(cell, 1);
@@ -27,9 +26,8 @@ namespace GameOfLife
                     }
                 }
             }
-
-            var cellsWithThreeNeighbours = dict.Where(x => x.Value == 3);
-            return cellsWithThreeNeighbours.Select(x => x.Key).ToList();
+            var cellsWithThreeNeighbours = dict.Where(cellInDict => cellInDict.Value == NumberOfNeighboursNeededtoLive);
+            return cellsWithThreeNeighbours.Select(cellInDict => cellInDict.Key).ToList();
         }
     }
 }
