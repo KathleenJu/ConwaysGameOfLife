@@ -4,28 +4,32 @@ using System.Linq;
 
 namespace GameOfLife
 {
-    public class LiveEvolutionRules 
+    public class LiveEvolutionRules
     {
         private readonly List<int> NumberOfNeighboursNeededtoLive = new List<int> {3};
 
-        public List<Cell> GetCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllNeighboursOfLivingCells)
+        public List<Cell> GetDeadCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllNeighboursOfLivingCells)
         {
-            var examp = new List<List<Cell>>
+            var dict = new Dictionary<Cell, int>();
+            foreach (var neighboursOfLivingCell in listOfAllNeighboursOfLivingCells)
             {
-                 new List<Cell>{new Cell(1, 1), new Cell(0,1), new Cell(2,3)},
-                 new List<Cell>{new Cell(1, 1), new Cell(3,1), new Cell(1,3)},
-                 new List<Cell>{new Cell(1, 1), new Cell(0,1), new Cell(0,3)}
-                
-            };
-            var commonItems = listOfAllNeighboursOfLivingCells.SelectMany(neighbourCells => neighbourCells).Distinct()
-                .Where(cell => listOfAllNeighboursOfLivingCells.TrueForAll(neighbourCells => neighbourCells.Contains(cell))).ToList();
-            var commonItems1 =
-                     examp.SelectMany(list => list.Distinct())
-                    .GroupBy(cell => cell)
-                    .Select(group => new { Count = group.Count(), Item = group.Key })
-            .Where(item => item.Count == 3).Select(group => group.Item).ToList();
+                foreach (var cell in neighboursOfLivingCell)
+                {
+                    var key = dict.Where(c => c.Key.Row == cell.Row && c.Key.Column == cell.Column)
+                        .Select(x => x.Key);
+                    if (!key.Any())
+                    {
+                        dict.Add(cell, 1);
+                    }
+                    else
+                    {
+                        dict[key.First()]++;
+                    }
+                }
+            }
 
-            return commonItems;
+            var cellsWithThreeNeighbours = dict.Where(x => x.Value == 3);
+            return cellsWithThreeNeighbours.Select(x => x.Key).ToList();
         }
     }
 }

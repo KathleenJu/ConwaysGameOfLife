@@ -18,60 +18,16 @@ namespace GameOfLife.Tests
 
             var neighboursOfAliveCell = new List<IEnumerable<Cell>>
             {
-                grid.GetAllNeighboursOfCell(new Cell(0, 2)),
-                grid.GetAllNeighboursOfCell(new Cell(0, 1)),
-                grid.GetAllNeighboursOfCell(new Cell(1, 0))
+                grid.GetAllNeighboursOfLivingCell(new Cell(0, 2)),
+                grid.GetAllNeighboursOfLivingCell(new Cell(0, 1)),
+                grid.GetAllNeighboursOfLivingCell(new Cell(1, 0))
             };
 
-            var expectedLiveCells = new List<Cell> {new Cell(1, 1), new Cell(0, 1)};
-            var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
+            var expectedLiveCells = new List<Cell> {new Cell(1, 1)};
+            var cellsThatShouldLive = rules.GetDeadCellsThatShouldLive(neighboursOfAliveCell);
 
             expectedLiveCells.Should().BeEquivalentTo(cellsThatShouldLive);
-            Assert.Equal(2, cellsThatShouldLive.Count);
-        }
-
-        [Fact]
-        public void NotChangeTheStateOfTheCellToAliveWhenItOnlyHasTwoLiveNeighbours()
-        {
-            var rules = new LiveEvolutionRules();
-            var grid = new Grid(5, 5);
-            grid.AddCell(new Cell(1, 1));
-            grid.AddCell(new Cell(0, 1));
-            grid.AddCell(new Cell(1, 0));
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLivingNeighboursOfCell(new Cell(1, 1)),
-                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighboursOfCell(new Cell(1, 0))
-            };
-            var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
-            var expectedOutput = new List<Cell> {new Cell(1, 1)};
-
-            Assert.Equal(expectedOutput, cellsThatShouldLive);
-        }
-
-        [Fact]
-        public void NotChangeTheStateOfTheCellToAliveWhenItHasFourLiveNeighbours()
-        {
-            var rules = new LiveEvolutionRules();
-            var cellTarget = new Cell(1, 1);
-            var grid = new Grid(5, 5);
-            grid.AddCell(cellTarget);
-            grid.AddCell(new Cell(0, 1));
-            grid.AddCell(new Cell(1, 0));
-            grid.AddCell(new Cell(2, 1));
-            grid.AddCell(new Cell(1, 2));
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLivingNeighboursOfCell(new Cell(0, 1)),
-                grid.GetLivingNeighboursOfCell(new Cell(1, 0)),
-                grid.GetLivingNeighboursOfCell(new Cell(2, 1)),
-                grid.GetLivingNeighboursOfCell(new Cell(1, 2))
-            };
-            var cellsThatShouldLive = rules.GetCellsThatShouldLive(neighboursOfAliveCell);
-            var expectedOutput = new List<Cell> {new Cell(0, 1), new Cell(0, 1), new Cell(2, 1), new Cell(1, 2)};
-
-            Assert.Equal(expectedOutput, cellsThatShouldLive);
+            Assert.Equal(1, cellsThatShouldLive.Count);
         }
     }
 }

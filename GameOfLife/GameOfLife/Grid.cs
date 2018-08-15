@@ -35,14 +35,14 @@ namespace GameOfLife
             LivingCells.Remove(cell);
         }
 
-        public IEnumerable<Cell> GetLivingNeighboursOfCell(Cell cellTarget)
+        public IEnumerable<Cell> GetLivingNeighboursOfLivingCell(Cell cellTarget)
         {
-            var allNeighbourOfCell = GetAllNeighboursOfCell(cellTarget);
+            var allNeighbourOfCell = GetAllNeighboursOfLivingCell(cellTarget);
             var allLivingNeighboursOfCell = allNeighbourOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Equals(neighbourCell)));
             return allLivingNeighboursOfCell;
         }
 
-        public IEnumerable<Cell> GetAllNeighboursOfCell(Cell cellTarget)
+        public IEnumerable<Cell> GetAllNeighboursOfLivingCell(Cell cellTarget)
         {
             var neighbourCells = new List<Cell>();
             for (var row = cellTarget.Row - 1; row <= cellTarget.Row + 1; row++)
@@ -59,5 +59,6 @@ namespace GameOfLife
                     
             return neighbourCells.Where(cell => !cell.Equals(cellTarget));
         }
+        //GetDeadNeighboursOfLivingCell
     }
 }

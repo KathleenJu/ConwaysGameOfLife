@@ -11,9 +11,15 @@
             Column = column;
         }
 
-        public bool Equals(Cell cell)
+        public override bool Equals(object cellObj)
         {
+            var cell = (Cell) cellObj;
             return cell.Row == Row && cell.Column == Column;
+        }
+
+        public override string ToString()
+        {
+            return Row + "," + Column;
         }
     }
 }
