@@ -8,10 +8,10 @@ namespace GameOfLife
     {
         private const int NumberOfNeighboursNeededtoLive = 3;
 
-        public List<Cell> GetDeadCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllDeadNeighboursOfLivingCells)
+        public List<Cell> GetDeadCellsThatShouldLive(List<IEnumerable<Cell>> listOfAllDeadNeighboursOfLiveCells)
         {
             var dict = new Dictionary<Cell, int>();
-            foreach (var deadNeighboursOfLivingCell in listOfAllDeadNeighboursOfLivingCells)
+            foreach (var deadNeighboursOfLivingCell in listOfAllDeadNeighboursOfLiveCells)
             {
                 foreach (var cell in deadNeighboursOfLivingCell)
                 {

@@ -35,7 +35,7 @@ namespace GameOfLife
             LivingCells.Remove(cell);
         }
 
-        public IEnumerable<Cell> GetLivingNeighboursOfLivingCell(Cell cellTarget)
+        public IEnumerable<Cell> GetLiveNeighboursOfLivingCell(Cell cellTarget)
         {
             var allNeighbourOfCell = GetAllNeighboursOfLivingCell(cellTarget);
             var allLivingNeighboursOfCell = allNeighbourOfCell.Where(neighbourCell => LivingCells.Any(livingCell => livingCell.Equals(neighbourCell)));

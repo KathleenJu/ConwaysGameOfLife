@@ -40,7 +40,7 @@ namespace GameOfLife
 
             foreach (var cell in livingCells)
             {
-                var livingNeighbouringCellsofCell = CurrentGrid.GetLivingNeighboursOfLivingCell(cell);
+                var livingNeighbouringCellsofCell = CurrentGrid.GetLiveNeighboursOfLivingCell(cell);
                 listOfAllNeighboursForLivingCells.Add(livingNeighbouringCellsofCell);
 
 //                if (LiveEvolutionRules.GetCellsThatShouldLive(listOfAllNeighboursForLivingCells))
