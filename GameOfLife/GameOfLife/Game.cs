@@ -6,14 +6,14 @@ namespace GameOfLife
 {
     public class Game
     {
-        public Grid CurrentGrid { get; }
+        public Grid Grid { get; }
         private readonly DeadEvolutionRules DeadEvolutionRules;
         private readonly LiveEvolutionRules LiveEvolutionRules;
 
 
-        public Game(Grid currentGrid)
+        public Game(Grid grid)
         {
-            CurrentGrid = currentGrid;
+            Grid = grid;
             DeadEvolutionRules = new DeadEvolutionRules();
             LiveEvolutionRules = new LiveEvolutionRules();
 //            SetInitialStateOfGrid();
@@ -22,39 +22,38 @@ namespace GameOfLife
 
         public void SetInitialStateOfGrid(List<Cell> livingCells)
         {
-            livingCells.ForEach(cell => CurrentGrid.AddCell(cell));
+            livingCells.ForEach(cell => Grid.AddCell(cell));
         }
 
         public void Evolve()
         {
-//            while (true)
-//            {
-                IterateGrid();
-//            }
+            var allDeadNeighboursOfLiveCell = new List<IEnumerable<Cell>>();
+            foreach (var cell in Grid.GetLivingCells())
+            {
+                allDeadNeighboursOfLiveCell.Add(Grid.GetDeadNeighboursOfLivingCell(cell));
+            }
+            var cellsThatShouldLive = LiveEvolutionRules.GetDeadCellsThatShouldLive(allDeadNeighboursOfLiveCell);
+            
+            var allLiveNeighboursOfLiveCell = new List<IEnumerable<Cell>>();
+            foreach (var cell in Grid.GetLivingCells())
+            {
+                allLiveNeighboursOfLiveCell.Add(Grid.GetLiveNeighboursOfLivingCell(cell));
+            }
+            var cellsThatShouldDie = DeadEvolutionRules.GetLiveCellsThatShouldDie(Grid.GetLivingCells());
+
+            cellsThatShouldLive.ForEach(cell =>
+            {
+                Grid.AddCell(cell);
+            });
+            
+            cellsThatShouldDie.ForEach(cell =>
+            {
+                Grid.RemoveCell(cell);
+            });
         }
 
         private void IterateGrid()
         {
-            var livingCells = CurrentGrid.GetLivingCells().ToList();
-            var listOfAllNeighboursForLivingCells = new List<IEnumerable<Cell>>();
-
-            foreach (var cell in livingCells)
-            {
-                var livingNeighbouringCellsofCell = CurrentGrid.GetLiveNeighboursOfLivingCell(cell);
-                listOfAllNeighboursForLivingCells.Add(livingNeighbouringCellsofCell);
-
-//                if (LiveEvolutionRules.GetCellsThatShouldLive(listOfAllNeighboursForLivingCells))
-//                {
-//                    if (!livingCells.Contains(cell))
-//                    {
-//                        CurrentGrid.AddCell(cell);
-//                    }
-//                }
-//                if (DeadEvolutionRules.CellDies(livingNeighbouringCellsofCell))
-//                {
-//                    CurrentGrid.RemoveCell(cell);
-//                }
-            }
         }
     }
 }

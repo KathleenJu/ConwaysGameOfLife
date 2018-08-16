@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using Xunit;
 
 namespace GameOfLife.Tests
@@ -6,45 +7,47 @@ namespace GameOfLife.Tests
     public class GameShould
     {
         [Fact]
-        public void RemoveCellFromGridWhenALiveCellDies()
+        public void ReturnAnEmptyGridWhenAllALiveCellDies()
         {
             var grid = new Grid(5,5);
-            var initialLivingCells = new List<Cell> {new Cell(1,1)};
+            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,0)};
             var game = new Game(grid);
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
-            var newlivingCells = new List<Cell>();
-                
-            Assert.Equal(game.CurrentGrid.GetLivingCells(), newlivingCells);
+            var actuaLivingCells = game.Grid.GetLivingCells();
+
+            actuaLivingCells.Should().BeEmpty();
+            Assert.Equal(0, actuaLivingCells.Count);
         }
         
         [Fact]
         public void RemoveCellsFromGridWhenMultipleLiveCellsDie()
         {
             var grid = new Grid(5,5);
-            var cellTarget = new Cell(1,1);
-            var initialLivingCells = new List<Cell> {cellTarget, new Cell(1,2), new Cell(4,2), new Cell(1,0)};
             var game = new Game(grid);
+            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,2), new Cell(4,2), new Cell(1,0)};
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
-            var newlivingCells = new List<Cell>{cellTarget};
-                
-            Assert.Equal(game.CurrentGrid.GetLivingCells(), newlivingCells);
+            var expectedLiveCells = new List<Cell> {new Cell(1, 1)};
+            var actuaLivingCells = game.Grid.GetLivingCells();
+
+            actuaLivingCells.Should().BeEquivalentTo(expectedLiveCells);
+            Assert.Equal(1, actuaLivingCells.Count);
         }
         
         [Fact]
         public void KeepCellFromGridWhenALiveCellLives()
         {
             var grid = new Grid(5,5);
-            var cellTarget = new Cell(1,1);
-            var initialLivingCells = new List<Cell> {cellTarget, new Cell(0,1), new Cell(2,1)};
             var game = new Game(grid);
+            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(0,1), new Cell(2,1)};
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
-            var newLivingCells = new List<Cell>{cellTarget};
-                
-            Assert.Equal(game.CurrentGrid.GetLivingCells(), newLivingCells);
-            Assert.True(game.CurrentGrid.GetLivingCells().Count == newLivingCells.Count);
+            var expectedLiveCells = new List<Cell> {new Cell(1, 1)};
+            var actuaLivingCells = game.Grid.GetLivingCells();
+
+            actuaLivingCells.Should().BeEquivalentTo(expectedLiveCells);
+            Assert.Equal(1, actuaLivingCells.Count);
         }
         
         [Fact]
@@ -58,8 +61,8 @@ namespace GameOfLife.Tests
             game.Evolve();
             var newLivingCells = new List<Cell>{cellTarget, new Cell(0,1)};
                 
-            Assert.Equal(game.CurrentGrid.GetLivingCells(), newLivingCells);
-            Assert.True(game.CurrentGrid.GetLivingCells().Count == newLivingCells.Count);
+            Assert.Equal(game.Grid.GetLivingCells(), newLivingCells);
+            Assert.True(game.Grid.GetLivingCells().Count == newLivingCells.Count);
         }
         
         [Fact]
@@ -71,8 +74,8 @@ namespace GameOfLife.Tests
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
                 
-            Assert.Equal(game.CurrentGrid.GetLivingCells(), initialLivingCells);
-            Assert.True(game.CurrentGrid.GetLivingCells().Count == initialLivingCells.Count);
+            Assert.Equal(game.Grid.GetLivingCells(), initialLivingCells);
+            Assert.True(game.Grid.GetLivingCells().Count == initialLivingCells.Count);
         }
     }
 }

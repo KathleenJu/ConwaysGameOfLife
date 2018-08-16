@@ -7,28 +7,22 @@ namespace GameOfLife.Tests
     public class DeadEvolutionRulesShould
     {
         [Fact]
-        public void GetTheLiveCellThatShouldDieWheItHasLessThanTwoNeighbours()
+        public void GetTheLiveCellThatShouldDieWhenItHasLessThanTwoNeighbours()
         {
             var rules = new DeadEvolutionRules();
             var grid = new Grid(5, 5);
-            grid.AddCell(new Cell(0, 0));
-            grid.AddCell(new Cell(1, 1));
-            grid.AddCell(new Cell(0, 2));
-            grid.AddCell(new Cell(1, 2));
+            var cellOne = new Cell(0, 0);
+            var cellTwo = new Cell(1, 1);
+            grid.AddCell(cellOne);
+            grid.AddCell(cellTwo);
 
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 0)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 1)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 2)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 2))
-            };
+            var livingCells = grid.GetLivingCells();
 
-            var expectedDeadCells = new List<Cell> {new Cell(0, 0)};
-            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(neighboursOfAliveCell);
+            var expectedDeadCells = new List<Cell> {cellOne, cellTwo};
+            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(livingCells);
 
             expectedDeadCells.Should().BeEquivalentTo(cellsThatShouldDie);
-            Assert.Equal(1, cellsThatShouldDie.Count);
+            Assert.Equal(2, cellsThatShouldDie.Count);
         }
 
         [Fact]
@@ -40,20 +34,32 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0, 1));
             grid.AddCell(new Cell(1, 0));
 
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 2)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 1)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 0))
-            };
+            var livingCells = grid.GetLivingCells();
 
             var expectedDeadCells = new List<Cell> {new Cell(0, 2), new Cell(1, 0)};
-            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(neighboursOfAliveCell);
+            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(livingCells);
 
             expectedDeadCells.Should().BeEquivalentTo(cellsThatShouldDie);
             Assert.Equal(2, cellsThatShouldDie.Count);
         }
 
+        [Fact]
+        public void GetLiveCellsThatShouldDieWhenTheCellsDontHaveNeighbours()
+        {
+            var rules = new DeadEvolutionRules();
+            var grid = new Grid(5, 5);
+            var cellOne = new Cell(1, 1);
+            grid.AddCell(cellOne);
+
+            var livingCells = grid.GetLivingCells();
+
+            var expectedDeadCells = new List<Cell> { cellOne };
+            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(livingCells);
+
+            expectedDeadCells.Should().BeEquivalentTo(cellsThatShouldDie);
+            Assert.Equal(1, cellsThatShouldDie.Count);
+        }
+        
         [Fact]
         public void GetMultipleLiveCellsThatShouldDieWheTheyHaveMoreThanThreeNeighbours()
         {
@@ -64,47 +70,31 @@ namespace GameOfLife.Tests
             grid.AddCell(new Cell(0, 1));
             grid.AddCell(new Cell(0, 2));
             grid.AddCell(new Cell(1, 2));
-
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 0)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 1)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 2)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 1)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 2))
-            };
+            
+            var livingCells = grid.GetLivingCells();
 
             var expectedDeadCells = new List<Cell> {new Cell(1, 1), new Cell(0, 1)};
-            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(neighboursOfAliveCell);
+            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(livingCells);
 
             expectedDeadCells.Should().BeEquivalentTo(cellsThatShouldDie);
             Assert.Equal(2, cellsThatShouldDie.Count);
         }
         
         [Fact]
-        public void GetNoLiveCellThatShouldDieWheTheyHaveTwoOrThreeNeighbours()
+        public void GetNoLiveCellThatShouldDieWhenTheyHaveTwoOrThreeNeighbours()
         {
             var rules = new DeadEvolutionRules();
             var grid = new Grid(4, 4);
-            grid.AddCell(new Cell(0, 0));
             grid.AddCell(new Cell(1, 3));
             grid.AddCell(new Cell(1, 1));
             grid.AddCell(new Cell(1, 2));
             grid.AddCell(new Cell(2, 2));
 
-            var neighboursOfAliveCell = new List<IEnumerable<Cell>>
-            {
-                grid.GetLiveNeighboursOfLivingCell(new Cell(0, 0)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 3)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 1)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(1, 2)),
-                grid.GetLiveNeighboursOfLivingCell(new Cell(2, 2))
-            };
+            var livingCells = grid.GetLivingCells();
 
-            var expectedDeadCells = new List<Cell> ();
-            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(neighboursOfAliveCell);
+            var cellsThatShouldDie = rules.GetLiveCellsThatShouldDie(livingCells);
 
-            expectedDeadCells.Should().BeEquivalentTo(cellsThatShouldDie);
+            cellsThatShouldDie.Should().BeEmpty();
             Assert.Equal(0, cellsThatShouldDie.Count);
         }
     }

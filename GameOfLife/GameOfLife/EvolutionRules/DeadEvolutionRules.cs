@@ -5,31 +5,25 @@ namespace GameOfLife
 {
     public class DeadEvolutionRules
     {
-        private readonly List<int> NumbersOfNeighboursNeededtoLive = new List<int> {2, 3};
-
-        public List<Cell> GetLiveCellsThatShouldDie(List<IEnumerable<Cell>> listOfAllLiveNeighboursOfLiveCells)
+        public List<Cell> GetLiveCellsThatShouldDie(List<Cell> livingCells)
         {
-            var dict = new Dictionary<Cell, int>();
-            foreach (var liveNeighboursOfLivingCell in listOfAllLiveNeighboursOfLiveCells)
+            var grid = new Grid(5, 5);
+            foreach (var cell in livingCells)
             {
-                foreach (var cell in liveNeighboursOfLivingCell)
+                grid.AddCell(cell);
+            }
+
+            var cellsThatShouldDie = new List<Cell>();
+            foreach (var cell in livingCells)
+            {
+                var liveNeighboursCount = grid.GetLiveNeighboursOfLivingCell(cell).Count();
+                if (liveNeighboursCount != 2 && liveNeighboursCount != 3)
                 {
-                    var key = dict
-                        .Where(cellInDict => cellInDict.Key.Row == cell.Row && cellInDict.Key.Column == cell.Column)
-                        .Select(x => x.Key);
-                    if (!key.Any())
-                    {
-                        dict.Add(cell, 1);
-                    }
-                    else
-                    {
-                        dict[key.First()]++;
-                    }
+                    cellsThatShouldDie.Add(cell);
                 }
             }
 
-            var cellsWithNoTwoOrThreeNeighbours = dict.Where(cellInDict => !NumbersOfNeighboursNeededtoLive.Any(NumberOfNeighbours => cellInDict.Value.Equals(NumberOfNeighbours)));
-            return cellsWithNoTwoOrThreeNeighbours.Select(cellInDict => cellInDict.Key).ToList();
+            return cellsThatShouldDie;
         }
     }
 }
