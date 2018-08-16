@@ -5,25 +5,40 @@ namespace GameOfLife
 {
     public class DeadEvolutionRules
     {
-        public List<Cell> GetLiveCellsThatShouldDie(List<Cell> livingCells)//pass in the 
-        {
-            var grid = new Grid(5, 5);
-            foreach (var cell in livingCells)
-            {
-                grid.AddCell(cell);
-            }
+        private readonly List<int> NumbersOfNeighboursNeededtoLive = new List<int> {2, 3};
 
-            var cellsThatShouldDie = new List<Cell>();
-            foreach (var cell in livingCells)
+        public List<Cell> GetLiveCellsThatShouldDie(List<IEnumerable<Cell>> listOfAllLiveNeighboursOfLiveCells, IEnumerable<Cell> livingCells)
+        {
+            var dict = new Dictionary<Cell, int>();
+            foreach (var liveNeighboursOfLivingCell in listOfAllLiveNeighboursOfLiveCells)
             {
-                var liveNeighboursCount = grid.GetLiveNeighboursOfLivingCell(cell).Count();
-                if (liveNeighboursCount != 2 && liveNeighboursCount != 3)
+                foreach (var cell in liveNeighboursOfLivingCell)
                 {
-                    cellsThatShouldDie.Add(cell);
+                    var key = dict
+                        .Where(cellInDict => cellInDict.Key.Row == cell.Row && cellInDict.Key.Column == cell.Column)
+                        .Select(x => x.Key);
+                    if (!key.Any())
+                    {
+                        dict.Add(cell, 1);
+                    }
+                    else
+                    {
+                        dict[key.First()]++;
+                    }
                 }
             }
 
+            var livingCellsWithNoNeighbour = GetLivingCellsWithNoNeighbour(livingCells, dict);
+            var cellsWithNoTwoOrThreeNeighbours = dict.Where(cellInDict => !NumbersOfNeighboursNeededtoLive.Any(NumberOfNeighbours => cellInDict.Value.Equals(NumberOfNeighbours)));
+            var cellsThatShouldDie = cellsWithNoTwoOrThreeNeighbours.Select(cellInDict => cellInDict.Key).ToList();
+            cellsThatShouldDie.AddRange(livingCellsWithNoNeighbour);
             return cellsThatShouldDie;
+        }
+
+        private IEnumerable<Cell> GetLivingCellsWithNoNeighbour(IEnumerable<Cell> livingCells, Dictionary<Cell, int> dict)
+        {
+            var livingCellsWithNoNeighbour = livingCells.Where(x => !dict.Any(y => y.Key.Equals(x))).Select(x => x);
+            return livingCellsWithNoNeighbour;
         }
     }
 }
