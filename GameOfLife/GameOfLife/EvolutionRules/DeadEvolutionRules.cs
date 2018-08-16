@@ -5,7 +5,7 @@ namespace GameOfLife
 {
     public class DeadEvolutionRules
     {
-        public List<Cell> GetLiveCellsThatShouldDie(List<Cell> livingCells)
+        public List<Cell> GetLiveCellsThatShouldDie(List<Cell> livingCells)//pass in the 
         {
             var grid = new Grid(5, 5);
             foreach (var cell in livingCells)

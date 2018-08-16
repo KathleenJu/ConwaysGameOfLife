@@ -59,10 +59,11 @@ namespace GameOfLife.Tests
             var game = new Game(grid);
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
-            var newLivingCells = new List<Cell>{cellTarget, new Cell(0,1)};
-                
-            Assert.Equal(game.Grid.GetLivingCells(), newLivingCells);
-            Assert.True(game.Grid.GetLivingCells().Count == newLivingCells.Count);
+            var expectedLiveCells = new List<Cell> {new Cell(0, 1) };
+            var actuaLivingCells = game.Grid.GetLivingCells();
+
+            actuaLivingCells.Should().BeEquivalentTo(expectedLiveCells);
+            Assert.Equal(1, actuaLivingCells.Count);
         }
         
         [Fact]
