@@ -9,36 +9,42 @@ namespace GameOfLife
 
         public List<Cell> GetLiveCellsThatShouldDie(List<IEnumerable<Cell>> listOfAllLiveNeighboursOfLiveCells, IEnumerable<Cell> livingCells)
         {
-            var dict = new Dictionary<Cell, int>();
+            var neighboursCount = GetAllNeighboursCount(listOfAllLiveNeighboursOfLiveCells);
+
+            var cellsWithNoTwoOrThreeNeighbours = neighboursCount.Where(cellInDict => !NumbersOfNeighboursNeededtoLive.Any(numberOfNeighbours => cellInDict.Value.Equals(numberOfNeighbours))).Select( cell => cell.Key).ToList();
+            var livingCellsWithNoNeighbour = GetLivingCellsWithNoNeighbour(livingCells, neighboursCount);
+            
+            return cellsWithNoTwoOrThreeNeighbours.Concat(livingCellsWithNoNeighbour).ToList();
+        }
+        
+        private static IEnumerable<Cell> GetLivingCellsWithNoNeighbour(IEnumerable<Cell> livingCells, Dictionary<Cell, int> dict)
+        {
+            var livingCellsWithNoNeighbour = livingCells.Where(x => !dict.Any(y => y.Key.Equals(x))).Select(x => x);
+            return livingCellsWithNoNeighbour;
+        }
+
+        private static Dictionary<Cell, int> GetAllNeighboursCount(List<IEnumerable<Cell>> listOfAllLiveNeighboursOfLiveCells)
+        {
+            var neighboursCount = new Dictionary<Cell, int>();
             foreach (var liveNeighboursOfLivingCell in listOfAllLiveNeighboursOfLiveCells)
             {
                 foreach (var cell in liveNeighboursOfLivingCell)
                 {
-                    var key = dict
+                    var key = neighboursCount
                         .Where(cellInDict => cellInDict.Key.Row == cell.Row && cellInDict.Key.Column == cell.Column)
                         .Select(x => x.Key);
                     if (!key.Any())
                     {
-                        dict.Add(cell, 1);
+                        neighboursCount.Add(cell, 1);
                     }
                     else
                     {
-                        dict[key.First()]++;
+                        neighboursCount[key.First()]++;
                     }
                 }
             }
 
-            var livingCellsWithNoNeighbour = GetLivingCellsWithNoNeighbour(livingCells, dict);
-            var cellsWithNoTwoOrThreeNeighbours = dict.Where(cellInDict => !NumbersOfNeighboursNeededtoLive.Any(NumberOfNeighbours => cellInDict.Value.Equals(NumberOfNeighbours)));
-            var cellsThatShouldDie = cellsWithNoTwoOrThreeNeighbours.Select(cellInDict => cellInDict.Key).ToList();
-            cellsThatShouldDie.AddRange(livingCellsWithNoNeighbour);
-            return cellsThatShouldDie;
-        }
-
-        private IEnumerable<Cell> GetLivingCellsWithNoNeighbour(IEnumerable<Cell> livingCells, Dictionary<Cell, int> dict)
-        {
-            var livingCellsWithNoNeighbour = livingCells.Where(x => !dict.Any(y => y.Key.Equals(x))).Select(x => x);
-            return livingCellsWithNoNeighbour;
+            return neighboursCount;
         }
     }
 }
