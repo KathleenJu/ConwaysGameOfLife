@@ -117,6 +117,21 @@ namespace GameOfLife.Tests
             Assert.Equal(7, actualNeighbourCells.Count());
         }
 
+
+        [Fact]
+        public void AddCelIfDoesNotExistInLivingCells()
+        {
+            var grid = new Grid(5, 5);
+            var cellTarget = new Cell(1, 1);
+            grid.AddCell(cellTarget);
+            grid.AddCell(new Cell(1, 2));
+            var expectedNeighbourCells = new List<Cell> {new Cell(1, 1), new Cell(1, 2)};
+            var actualNeighbourCells = grid.GetLivingCells();
+            
+            expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
+            Assert.Equal(2, grid.GetLivingCells().Count);
+        }
+        
         [Fact]
         public void NotAddCelIfAlreadyExist()
         {

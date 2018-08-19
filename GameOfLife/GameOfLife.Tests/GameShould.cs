@@ -7,10 +7,24 @@ namespace GameOfLife.Tests
     public class GameShould
     {
         [Fact]
+        public void AddTheListsOfCellsAsTheInitialLivingStateToTheGrid()
+        {
+            var game = new Game();
+            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,2), new Cell(2,2)};
+            game.SetGridSize(5, 5);
+            game.SetInitialStateOfGrid(initialLivingCells);
+            var expectedLiveCells = new List<Cell> {new Cell(1,1), new Cell(1,2), new Cell( 2,2)};
+            var actuaLivingCells = game.Grid.GetLivingCells();
+
+            actuaLivingCells.Should().BeEquivalentTo(expectedLiveCells);
+            Assert.Equal(3, actuaLivingCells.Count);
+        }
+        
+        [Fact]
         public void ReturnAnEmptyGridWhenAllALiveCellDies()
         {
-            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,0), new Cell(3,3)};
             var game = new Game();
+            var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,0), new Cell(3,3)};
             game.SetGridSize(5, 5);
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();
@@ -53,8 +67,8 @@ namespace GameOfLife.Tests
         [Fact]
         public void AddADeadCellToGridWhenCellLives()
         {
-            var initialLivingCells = new List<Cell> {new Cell(0,1), new Cell(0,2), new Cell(1,0)};
             var game = new Game();
+            var initialLivingCells = new List<Cell> {new Cell(0,1), new Cell(0,2), new Cell(1,0)};
             game.SetGridSize(5, 5);
             game.SetInitialStateOfGrid(initialLivingCells);
             game.Evolve();

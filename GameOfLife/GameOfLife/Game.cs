@@ -22,9 +22,9 @@ namespace GameOfLife
             Grid = new Grid(height, width);
         }
 
-        public void SetInitialStateOfGrid(List<Cell> livingCells)
+        public void SetInitialStateOfGrid(List<Cell> initialLivingCells)
         {
-            livingCells.ForEach(cell => Grid.AddCell(cell));
+            initialLivingCells.ForEach(cell => Grid.AddCell(cell));
         }
 
         public void Evolve()

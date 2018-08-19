@@ -23,30 +23,42 @@ namespace GameOfLife
 
         public List<Cell> GetInitialStateOfGrid()
         {
-//            RenderMessage("Type in a coordinates of your initial grid in this format - 0,1 2,1 0,2 : ");
-//            var input = Console.ReadLine();
-//            while (input == null && !Regex.IsMatch(input, "^[0-9],[0-9] +?$"))
-//            {
-//                RenderMessage("Wrong format. Try again in x,y x,y format.");
-//                input = Console.ReadLine();
-//            }
-//
-//            var coordinates = input.Split(" ");
-            return new List<Cell>
+            RenderMessage("Type in a coordinates of your initial grid in this format - 1,2 3,2 1,3 : ");
+            var input = Console.ReadLine();
+            while (input == null && !Regex.IsMatch(input, "^([1-9][1-9]*?,[1-9][1-9]*?( ?))+?$"))
             {
-                new Cell(0,0),
-                new Cell(1,1),
-                new Cell(0,2),
-                new Cell(1,2),
-                new Cell(2,1)
-               
-            };
+                RenderMessage("Wrong format. Try again in x,y x,y format.");
+                input = Console.ReadLine();
+            }
+
+            var coordinates = input.Split(" ");
+            var foo = new List<Cell>();
+            foreach (var coord in coordinates)
+            {
+                var row = int.Parse((coord[0] - 1).ToString());
+                var column = int.Parse((coord[2] - 1).ToString());
+                Console.WriteLine(coord[0] + "," + coord[2]);
+                foo.Add(new Cell(row, column));
+            }
+
+            Console.WriteLine(" count of lists of cell " + foo.Count);
+            return foo.ToList();
+
 //            return coordinates.Select(coord =>
 //            {
-//                var row = coord[0] - 1;
-//                var column = coord[2] - 1;
+//                var row = int.Parse((coord[0] - 1).ToString());
+//                var column = int.Parse((coord[2] - 1).ToString());
 //                return new Cell(row, column);
 //            }).ToList();
+//            return new List<Cell>
+//            {
+//                new Cell(0,0),
+//                new Cell(1,1),
+//                new Cell(0,2),
+//                new Cell(1,2),
+//                new Cell(2,1)
+//               
+//            };
         }
 
         public void RenderGrid(Grid grid)
@@ -62,6 +74,7 @@ namespace GameOfLife
 
                 Console.Write(Environment.NewLine);
             }
+
             Console.WriteLine(Environment.NewLine);
         }
 
@@ -80,7 +93,7 @@ namespace GameOfLife
             s += "╗" + "\n";
 
             for (var i = 0; i < grid.Height; i++)
-                s +=   "║" + space + "║" + "\n";
+                s += "║" + space + "║" + "\n";
 
             s += "╚";
             for (var i = 0; i < grid.Width; i++)
