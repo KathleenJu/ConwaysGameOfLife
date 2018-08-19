@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace GameOfLife
 {
@@ -7,10 +8,23 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Conway's Game of Life");
+            var game = new Game();
             var renderer = new ConsoleRenderer();
-            renderer.RenderGrid(new Grid(10,20));
-            renderer.RenderMessage("Type in a coordinates of our initial grid in this format - 0,0 1,1 0,2");
+            renderer.RenderMessage("Conway's Game of Life\n");
+            renderer.RenderGrid(new Grid(20,20));
+            var height = renderer.GetGridDimension("height");
+            var width = renderer.GetGridDimension("width");
+            game.SetGridSize(height, width);
+            var initialCells = renderer.GetInitialStateOfGrid();
+            game.SetInitialStateOfGrid(initialCells);
+            while (true)
+            {
+                game.Evolve();
+                renderer.RenderGrid(game.Grid);
+                Thread.Sleep(1000);
+            }
+
+            
         }
     }
 }

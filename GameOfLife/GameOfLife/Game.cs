@@ -6,18 +6,20 @@ namespace GameOfLife
 {
     public class Game
     {
-        public Grid Grid { get; }
+        public Grid Grid { get; private set; }
         private readonly DeadEvolutionRules DeadEvolutionRules;
         private readonly LiveEvolutionRules LiveEvolutionRules;
 
 
-        public Game(Grid grid)
+        public Game()
         {
-            Grid = grid;
             DeadEvolutionRules = new DeadEvolutionRules();
             LiveEvolutionRules = new LiveEvolutionRules();
-//            SetInitialStateOfGrid();
-//            Evolve();
+        }
+
+        public void SetGridSize(int height, int width)
+        {
+            Grid = new Grid(height, width);
         }
 
         public void SetInitialStateOfGrid(List<Cell> livingCells)

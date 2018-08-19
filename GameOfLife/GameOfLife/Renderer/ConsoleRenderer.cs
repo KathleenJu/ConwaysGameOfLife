@@ -9,6 +9,7 @@ namespace GameOfLife
     {
         public int GetGridDimension(string dimension)
         {
+            RenderMessage("Please type in the " + dimension + " of the grid: ");
             var input = Console.ReadLine();
             int dimensionSize;
             while (!int.TryParse(input, out dimensionSize))
@@ -22,28 +23,46 @@ namespace GameOfLife
 
         public List<Cell> GetInitialStateOfGrid()
         {
-            var input = Console.ReadLine();
-            while (input == null && !Regex.IsMatch(input, "^[0-9],[0-9] +?$"))
+//            RenderMessage("Type in a coordinates of your initial grid in this format - 0,1 2,1 0,2 : ");
+//            var input = Console.ReadLine();
+//            while (input == null && !Regex.IsMatch(input, "^[0-9],[0-9] +?$"))
+//            {
+//                RenderMessage("Wrong format. Try again in x,y x,y format.");
+//                input = Console.ReadLine();
+//            }
+//
+//            var coordinates = input.Split(" ");
+            return new List<Cell>
             {
-                RenderMessage("Wrong format. Try again in x,y x,y format.");
-                input = Console.ReadLine();
-            }
-
-            var coordinates = input.Split(" ");
-            return coordinates.Select(coord => new Cell(coord[0], coord[2])).ToList();
+                new Cell(0,0),
+                new Cell(1,1),
+                new Cell(0,2),
+                new Cell(1,2),
+                new Cell(2,1)
+               
+            };
+//            return coordinates.Select(coord =>
+//            {
+//                var row = coord[0] - 1;
+//                var column = coord[2] - 1;
+//                return new Cell(row, column);
+//            }).ToList();
         }
 
         public void RenderGrid(Grid grid)
         {
             var livingCells = grid.GetLivingCells();
-            RenderBorder(grid);
+//            RenderBorder(grid);
             for (var row = 0; row < grid.Height; row++)
             {
                 for (var col = 0; col < grid.Width; col++)
                 {
-                    Console.Write(livingCells.Any(cell => cell.Row == row && cell.Column == col) ? "*" : " ");
+                    Console.Write(livingCells.Any(cell => cell.Row == row && cell.Column == col) ? "* " : "- ");
                 }
+
+                Console.Write(Environment.NewLine);
             }
+            Console.WriteLine(Environment.NewLine);
         }
 
         private static void RenderBorder(Grid grid)
