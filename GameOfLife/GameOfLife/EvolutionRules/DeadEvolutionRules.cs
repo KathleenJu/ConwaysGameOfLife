@@ -11,12 +11,19 @@ namespace GameOfLife
         {
             var neighboursCount = GetAllNeighboursCount(listOfAllLiveNeighboursOfLiveCells);
 
-            var cellsWithNoTwoOrThreeNeighbours = neighboursCount.Where(cellInDict => !NumbersOfNeighboursNeededtoLive.Any(numberOfNeighbours => cellInDict.Value.Equals(numberOfNeighbours))).Select( cell => cell.Key).ToList();
+            var cellsWithNoTwoOrThreeNeighbours = GetCellsWithNoTwoOrThreeNeighbours(neighboursCount);
             var livingCellsWithNoNeighbour = GetLivingCellsWithNoNeighbour(livingCells, neighboursCount);
             
             return cellsWithNoTwoOrThreeNeighbours.Concat(livingCellsWithNoNeighbour).ToList();
         }
-        
+
+        private List<Cell> GetCellsWithNoTwoOrThreeNeighbours(Dictionary<Cell, int> neighboursCount)
+        {
+            var cellsWithNoTwoOrThreeNeighbours = neighboursCount.Where(cellInDict =>!NumbersOfNeighboursNeededtoLive.Any(numberOfNeighbours => cellInDict.Value.Equals(numberOfNeighbours)))
+                .Select(cell => cell.Key).ToList();
+            return cellsWithNoTwoOrThreeNeighbours;
+        }
+
         private static IEnumerable<Cell> GetLivingCellsWithNoNeighbour(IEnumerable<Cell> livingCells, Dictionary<Cell, int> dict)
         {
             var livingCellsWithNoNeighbour = livingCells.Where(x => !dict.Any(y => y.Key.Equals(x))).Select(x => x);
