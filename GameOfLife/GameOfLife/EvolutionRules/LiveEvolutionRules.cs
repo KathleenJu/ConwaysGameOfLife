@@ -26,8 +26,8 @@ namespace GameOfLife
                     }
                 }
             }
-            var cellsWithThreeNeighbours = dict.Where(cellInDict => cellInDict.Value == NumberOfNeighboursNeededtoLive);
-            return cellsWithThreeNeighbours.Select(cellInDict => cellInDict.Key).ToList();
+            var cellsWithThreeNeighbours = dict.Where(cellInDict => cellInDict.Value == NumberOfNeighboursNeededtoLive).Select(cellInDict => cellInDict.Key).ToList();
+            return cellsWithThreeNeighbours;
         }
     }
 }

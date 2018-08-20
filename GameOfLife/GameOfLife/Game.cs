@@ -7,6 +7,7 @@ namespace GameOfLife
     public class Game
     {
         public Grid Grid { get; private set; }
+        public List<Cell> GetLivingCells => Grid.GetLivingCells();
         private readonly DeadEvolutionRules DeadEvolutionRules;
         private readonly LiveEvolutionRules LiveEvolutionRules;
 
@@ -17,15 +18,6 @@ namespace GameOfLife
             LiveEvolutionRules = new LiveEvolutionRules();
         }
 
-        public void SetGridSize(int height, int width)
-        {
-            Grid = new Grid(height, width);
-        }
-
-        public void SetInitialStateOfGrid(List<Cell> initialLivingCells)
-        {
-            initialLivingCells.ForEach(cell => Grid.AddCell(cell));
-        }
 
         public void Evolve()
         {
@@ -54,5 +46,16 @@ namespace GameOfLife
             cellsThatShouldLive.ForEach(cell => { Grid.AddCell(cell); });
             cellsThatShouldDie.ForEach(cell => { Grid.RemoveCell(cell); });
         }
+        
+        public void SetGridSize(int height, int width)
+        {
+            Grid = new Grid(height, width);
+        }
+
+        public void SetInitialStateOfGrid(List<Cell> initialLivingCells)
+        {
+            initialLivingCells.ForEach(cell => Grid.AddCell(cell));
+        }
+
     }
 }

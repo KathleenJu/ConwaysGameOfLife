@@ -14,14 +14,14 @@ namespace GameOfLife.Tests
             game.SetGridSize(5, 5);
             game.SetInitialStateOfGrid(initialLivingCells);
             var expectedLiveCells = new List<Cell> {new Cell(1,1), new Cell(1,2), new Cell( 2,2)};
-            var actuaLivingCells = game.Grid.GetLivingCells();
+            var actuaLivingCells = game.GetLivingCells;
 
             actuaLivingCells.Should().BeEquivalentTo(expectedLiveCells);
             Assert.Equal(3, actuaLivingCells.Count);
         }
         
         [Fact]
-        public void ReturnAnEmptyGridWhenAllALiveCellDies()
+        public void ReturnAnEmptyGridWhenAllALiveCellDie()
         {
             var game = new Game();
             var initialLivingCells = new List<Cell> {new Cell(1,1), new Cell(1,0), new Cell(3,3)};
