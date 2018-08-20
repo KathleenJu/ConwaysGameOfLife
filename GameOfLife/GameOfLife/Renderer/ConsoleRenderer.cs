@@ -25,57 +25,56 @@ namespace GameOfLife
         {
             RenderMessage("Type in a coordinates of your initial grid in this format - 1,2 3,2 1,3 : ");
             var input = Console.ReadLine();
-            while (input == null && !Regex.IsMatch(input, "^([1-9][1-9]*?,[1-9][1-9]*?( ?))+?$"))
+            if (input == "")
             {
-                RenderMessage("Wrong format. Try again in x,y x,y format.");
+                return GetRandomInitialStateOfGrid();
+            }
+
+            while (!Regex.IsMatch(input, "^([0-9][0-9]*?,[0-9][0-9]*?( ?))+?$"))
+            {
+                RenderMessage("Wrong format. Try again in x,y x,y format: ");
                 input = Console.ReadLine();
             }
 
             var coordinates = input.Split(" ");
-            var foo = new List<Cell>();
-            foreach (var coord in coordinates)
+            return coordinates.Select(coord =>
             {
-                var row = int.Parse((coord[0] - 1).ToString());
-                var column = int.Parse((coord[2] - 1).ToString());
-                Console.WriteLine(coord[0] + "," + coord[2]);
-                foo.Add(new Cell(row, column));
-            }
+                var row = Int32.Parse(coord.Split(",").First()) - 1;
+                var column = Int32.Parse(coord.Split(",").Last()) - 1;
 
-            Console.WriteLine(" count of lists of cell " + foo.Count);
-            return foo.ToList();
+                return new Cell(row, column);
+            }).ToList();
+        }
 
-//            return coordinates.Select(coord =>
-//            {
-//                var row = int.Parse((coord[0] - 1).ToString());
-//                var column = int.Parse((coord[2] - 1).ToString());
-//                return new Cell(row, column);
-//            }).ToList();
-//            return new List<Cell>
-//            {
-//                new Cell(0,0),
-//                new Cell(1,1),
-//                new Cell(0,2),
-//                new Cell(1,2),
-//                new Cell(2,1)
-//               
-//            };
+        private static List<Cell> GetRandomInitialStateOfGrid()
+        {
+            return new List<Cell>
+            {
+                new Cell(0, 0),
+                new Cell(1, 1),
+                new Cell(0, 2),
+                new Cell(1, 2),
+                new Cell(2, 1)
+            };
         }
 
         public void RenderGrid(Grid grid)
         {
             var livingCells = grid.GetLivingCells();
 //            RenderBorder(grid);
+            string gridString = "";
             for (var row = 0; row < grid.Height; row++)
             {
                 for (var col = 0; col < grid.Width; col++)
                 {
-                    Console.Write(livingCells.Any(cell => cell.Row == row && cell.Column == col) ? "* " : "- ");
+                    gridString += livingCells.Any(cell => cell.Row == row && cell.Column == col) ? "* " : "- ";
                 }
 
-                Console.Write(Environment.NewLine);
+                gridString += Environment.NewLine;
             }
 
-            Console.WriteLine(Environment.NewLine);
+            gridString += Environment.NewLine;
+            Console.WriteLine(gridString);
         }
 
         private static void RenderBorder(Grid grid)

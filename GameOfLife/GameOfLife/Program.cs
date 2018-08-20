@@ -12,7 +12,7 @@ namespace GameOfLife
             var consoleRenderer = new ConsoleRenderer();
             var gameOfLife = new GameOfLifeRender(game, consoleRenderer);
             
-            gameOfLife.StartGame();
+            gameOfLife.StartGame(); 
         }
     }
 }

@@ -16,10 +16,5 @@
             var cell = (Cell) cellObj;
             return cell.Row == Row && cell.Column == Column;
         }
-
-        public override string ToString()
-        {
-            return Row + "," + Column;
-        }
     }
 }

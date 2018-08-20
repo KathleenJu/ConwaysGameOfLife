@@ -6,9 +6,9 @@ namespace GameOfLife
 {
     public class GameOfLifeRender
     {
-        private readonly Game Game; 
+        private readonly Game Game;
         private readonly IRenderer Renderer;
-        
+
         public GameOfLifeRender(Game game, IRenderer renderer)
         {
             Game = game;
@@ -18,21 +18,26 @@ namespace GameOfLife
         public void StartGame()
         {
             Renderer.RenderMessage("Conway's Game of Life\n");
-            Renderer.RenderGrid(new Grid(30, 30));
-         
+            Renderer.RenderGrid(new Grid(20, 20));
+
             var height = Renderer.GetGridDimension("height");
             var width = Renderer.GetGridDimension("width");
             Game.SetGridSize(height, width);
-            
+
             var initialCells = Renderer.GetInitialStateOfGrid();
             Game.SetInitialStateOfGrid(initialCells);
-            Renderer.RenderGrid(Game.Grid);
             
-            while (true)
+            var generation = 1;
+            var numberOfLivingCells = Game.Grid.GetLivingCells().Count;
+            while (numberOfLivingCells != 0)
             {
-                Game.Evolve();
+                Renderer.RenderMessage("Generation: " + generation + " ");
+                Renderer.RenderMessage("No. of Cells: " + numberOfLivingCells + "\n");
                 Renderer.RenderGrid(Game.Grid);
-                Thread.Sleep(1000);
+                Game.Evolve();
+                generation++;
+                numberOfLivingCells = Game.Grid.GetLivingCells().Count;
+                Thread.Sleep(500);
             }
         }
     }
