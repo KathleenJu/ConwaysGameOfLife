@@ -7,14 +7,56 @@ namespace GameOfLife
 {
     public class ConsoleRenderer : IRenderer
     {
+        private string Title;
+        private int Generation;
+        private int NumberOfLivingCells;
+        private string GridString;
+        
+        public void SetTitle(string title)
+        {
+            Title = title;
+        }
+
+        public void SetGenerationNumber(int generation)
+        {
+            Generation = generation;
+        }
+
+        public void SetNumberOfLivingCells(int noOflivingCells)
+        {
+            NumberOfLivingCells = noOflivingCells;
+        }
+
+        public void SetGrid(Grid grid)
+        {
+            string gridString = "";
+            for (var row = 0; row < grid.Height; row++)
+            {
+                for (var col = 0; col < grid.Width; col++)
+                {
+                    gridString += grid.GetLivingCells().Any(cell => cell.Row == row && cell.Column == col) ? "* " : "- ";
+                }
+
+                gridString += Environment.NewLine;
+            }
+
+            gridString += Environment.NewLine;
+            GridString = gridString;
+        }
+
+        public void RenderTitle()
+        {
+            Console.WriteLine(Title);
+        } 
+
         public int GetGridDimension(string dimension)
         {
-            RenderMessage("Please type in the " + dimension + " of the grid: ");
+            Console.Write("Please type in the " + dimension + " of the grid: ");
             var input = Console.ReadLine();
             int dimensionSize;
             while (!int.TryParse(input, out dimensionSize))
             {
-                RenderMessage("Please type in a NUMBER for the grid " + dimension + " : ");
+                Console.Write("Please type in a NUMBER for the grid " + dimension + " : ");
                 input = Console.ReadLine();
             }
 
@@ -23,7 +65,7 @@ namespace GameOfLife
 
         public List<Cell> GetInitialStateOfGrid()
         {
-            RenderMessage("Type in a coordinates of your initial grid in this format - 1,2 3,2 1,3 : ");
+            Console.Write("Type in a coordinates of your initial grid in this format - 1,2 3,2 1,3 : ");
             var input = Console.ReadLine();
             if (input == "")
             {
@@ -32,7 +74,7 @@ namespace GameOfLife
 
             while (!Regex.IsMatch(input, "^([0-9][0-9]*?,[0-9][0-9]*?( ?))+?$"))
             {
-                RenderMessage("Wrong format. Try again in x,y x,y format: ");
+                Console.Write("Wrong format. Try again in x,y x,y format: ");
                 input = Console.ReadLine();
             }
 
@@ -58,54 +100,12 @@ namespace GameOfLife
             };
         }
 
-        public void RenderGrid(Grid grid)
+        public void RenderGrid()
         {
-            var livingCells = grid.GetLivingCells();
 //            RenderBorder(grid);
-            string gridString = "";
-            for (var row = 0; row < grid.Height; row++)
-            {
-                for (var col = 0; col < grid.Width; col++)
-                {
-                    gridString += livingCells.Any(cell => cell.Row == row && cell.Column == col) ? "* " : "- ";
-                }
-
-                gridString += Environment.NewLine;
-            }
-
-            gridString += Environment.NewLine;
-            Console.WriteLine(gridString);
+            Console.WriteLine("\nGeneration: " + Generation + " No. of Cells: " + NumberOfLivingCells );
+            Console.WriteLine(GridString);
         }
 
-        private static void RenderBorder(Grid grid)
-        {
-            var s = "╔";
-            var space = "";
-
-            for (var i = 0; i < grid.Width; i++)
-            {
-                space += " ";
-                s += "═";
-            }
-
-
-            s += "╗" + "\n";
-
-            for (var i = 0; i < grid.Height; i++)
-                s += "║" + space + "║" + "\n";
-
-            s += "╚";
-            for (var i = 0; i < grid.Width; i++)
-                s += "═";
-
-            s += "╝" + "\n";
-
-            Console.Write(s);
-        }
-
-        public void RenderMessage(string message)
-        {
-            Console.Write(message);
-        }
     }
 }
