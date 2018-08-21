@@ -17,7 +17,7 @@ namespace GameOfLife
             LivingCells = new List<Cell>();
         }
 
-        public List<Cell> GetLivingCells()
+        public IEnumerable<Cell> GetLivingCells()
         {
             return LivingCells;
         }

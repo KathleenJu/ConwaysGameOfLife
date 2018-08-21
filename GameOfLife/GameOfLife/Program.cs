@@ -8,11 +8,11 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            var game = new Game();
+            var game = new GameOfLife();
             var consoleRenderer = new ConsoleRenderer();
-            var gameOfLife = new GameOfLifeRender(game, consoleRenderer);
+            var gameInstance = new GameEngine(game, consoleRenderer);
             
-            gameOfLife.StartGame(); 
+            gameInstance.StartGame(); 
         }
     }
 }

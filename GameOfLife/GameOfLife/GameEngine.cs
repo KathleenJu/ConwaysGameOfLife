@@ -1,42 +1,43 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace GameOfLife
 {
-    public class GameOfLifeRender
+    public class GameEngine
     {
-        private readonly Game Game;
+        private readonly GameOfLife GameOfLife;
         private readonly IRenderer Renderer;
 
-        public GameOfLifeRender(Game game, IRenderer renderer)
+        public GameEngine(GameOfLife gameOfLife, IRenderer renderer)
         {
-            Game = game;
+            GameOfLife = gameOfLife;
             Renderer = renderer;
         }
 
         public void StartGame()
         {
-            Renderer.RenderMessage("Conway's Game of Life\n");
+            Renderer.RenderMessage("Conway's Game of Life\n"); //settitle
             Renderer.RenderGrid(new Grid(20, 20));
 
             var height = Renderer.GetGridDimension("height");
             var width = Renderer.GetGridDimension("width");
-            Game.SetGridSize(height, width);
+            GameOfLife.SetGridSize(height, width);
 
             var initialCells = Renderer.GetInitialStateOfGrid();
-            Game.SetInitialStateOfGrid(initialCells);
+            GameOfLife.SetInitialStateOfGrid(initialCells);
             
             var generation = 1;
-            var numberOfLivingCells = Game.Grid.GetLivingCells().Count;
+            var numberOfLivingCells = GameOfLife.LivingCells.Count();
             while (numberOfLivingCells != 0)
             {
-                Renderer.RenderMessage("Generation: " + generation + " ");
+                Renderer.RenderMessage("Generation: " + generation + " "); //setgeneration
                 Renderer.RenderMessage("No. of Cells: " + numberOfLivingCells + "\n");
-                Renderer.RenderGrid(Game.Grid);
-                Game.Evolve();
+                Renderer.RenderGrid(GameOfLife.GetGrid());
+                GameOfLife.Evolve();
                 generation++;
-                numberOfLivingCells = Game.Grid.GetLivingCells().Count;
+                numberOfLivingCells = GameOfLife.LivingCells.Count();
                 Thread.Sleep(500);
             }
         }

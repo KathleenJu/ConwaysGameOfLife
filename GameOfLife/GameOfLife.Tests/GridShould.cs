@@ -129,7 +129,7 @@ namespace GameOfLife.Tests
             var actualNeighbourCells = grid.GetLivingCells();
             
             expectedNeighbourCells.Should().BeEquivalentTo(actualNeighbourCells);
-            Assert.Equal(2, grid.GetLivingCells().Count);
+            Assert.Equal(2, grid.GetLivingCells().Count());
         }
         
         [Fact]
@@ -140,7 +140,7 @@ namespace GameOfLife.Tests
             grid.AddCell(cellTarget);
             grid.AddCell(new Cell(1, 1));
 
-            Assert.Equal(1, grid.GetLivingCells().Count);
+            Assert.Equal(1, grid.GetLivingCells().Count());
         }
 
         [Fact]

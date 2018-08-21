@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 
 namespace GameOfLife
 {
-    public class Game
+    public class GameOfLife
     {
-        public Grid Grid { get; private set; }
-        public List<Cell> GetLivingCells => Grid.GetLivingCells();
+        private Grid Grid;
+        public IEnumerable<Cell> LivingCells => Grid.GetLivingCells();
         private readonly DeadEvolutionRules DeadEvolutionRules;
         private readonly LiveEvolutionRules LiveEvolutionRules;
 
 
-        public Game()
+        public GameOfLife()
         {
             DeadEvolutionRules = new DeadEvolutionRules();
             LiveEvolutionRules = new LiveEvolutionRules();
@@ -27,14 +25,14 @@ namespace GameOfLife
             IterateGrid(allDeadNeighboursOfLiveCell, allLiveNeighboursOfLiveCell);
             
             var cellsThatShouldLive = LiveEvolutionRules.GetDeadCellsThatShouldLive(allDeadNeighboursOfLiveCell);
-            var cellsThatShouldDie = DeadEvolutionRules.GetLiveCellsThatShouldDie(allLiveNeighboursOfLiveCell, Grid.GetLivingCells());
+            var cellsThatShouldDie = DeadEvolutionRules.GetLiveCellsThatShouldDie(allLiveNeighboursOfLiveCell, LivingCells);
 
             UpdateGrid(cellsThatShouldLive, cellsThatShouldDie);
         }
 
         private void IterateGrid(List<IEnumerable<Cell>> allDeadNeighboursOfLiveCell, List<IEnumerable<Cell>> allLiveNeighboursOfLiveCell)
         {
-            foreach (var cell in Grid.GetLivingCells())
+            foreach (var cell in LivingCells)
             {
                 allDeadNeighboursOfLiveCell.Add(Grid.GetDeadNeighboursOfLivingCell(cell));
                 allLiveNeighboursOfLiveCell.Add(Grid.GetLiveNeighboursOfLivingCell(cell));
@@ -45,6 +43,11 @@ namespace GameOfLife
         {
             cellsThatShouldLive.ForEach(cell => { Grid.AddCell(cell); });
             cellsThatShouldDie.ForEach(cell => { Grid.RemoveCell(cell); });
+        }
+
+        public Grid GetGrid()
+        {
+            return Grid;
         }
         
         public void SetGridSize(int height, int width)
