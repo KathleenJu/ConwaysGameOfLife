@@ -103,8 +103,7 @@ namespace GameOfLife
         public void RenderGrid()
         {
 //            RenderBorder(grid);
-            Console.WriteLine("\nGeneration: " + Generation + " No. of Cells: " + NumberOfLivingCells );
-            Console.WriteLine(GridString);
+            Console.WriteLine("\nGeneration: " + Generation + " No. of Cells: " + NumberOfLivingCells + "\n" + GridString );
         }
 
     }

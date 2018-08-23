@@ -3,4 +3,14 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CodeMirror.KeyMap" Version="3.1.0" />
+    <PackageReference Include="Mono.CSharp" Version="4.0.0.143" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="hello.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="HelloWorld.exe" />
+  </ItemGroup>
 </Project>
